@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'hobo_support/enumerable'
+
 class ParameterSubstitution
   class Context
     attr_reader :input, :mapping, :required_parameters, :parameter_start, :parameter_end,
