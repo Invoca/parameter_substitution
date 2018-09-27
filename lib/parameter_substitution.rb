@@ -2,7 +2,6 @@
 
 # See lib/parameter_substitution/readme.md
 
-require "parameter_substitution/version"
 require "parameter_substitution/context"
 require "parameter_substitution/parse_error"
 require "parameter_substitution/parser"

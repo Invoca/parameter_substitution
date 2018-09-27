@@ -2,11 +2,10 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'parameter_substitution/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "parameter_substitution"
-  spec.version       = ParameterSubstitution::VERSION
+  spec.version       = "0.1.0"
   spec.authors       = ["Collin McGrath"]
   spec.email         = ["cmcgrath@invoca.com"]
 
