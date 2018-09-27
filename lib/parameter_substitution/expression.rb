@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'invoca/utils'
+
 class ParameterSubstitution
   class Expression
     attr_reader :expression_list, :context
