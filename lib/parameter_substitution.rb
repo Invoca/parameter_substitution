@@ -11,6 +11,7 @@ require "parameter_substitution/method_call_expression"
 require "parameter_substitution/substitution_expression"
 require "parameter_substitution/text_expression"
 require "parameter_substitution/expression"
+require 'active_support'
 
 class ParameterSubstitution
   class SubstitutionError < StandardError; end
