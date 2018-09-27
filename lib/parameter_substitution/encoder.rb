@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'json'
+require 'active_support/core_ext/string/inflections'
+require 'builder'
+
 class ParameterSubstitution
   class Encoder
     ENCODINGS = {
