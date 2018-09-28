@@ -34,8 +34,8 @@ describe ParameterSubstitution::Expression do
         expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Unknown replacement parameter 'not_defined'")
       end
 
-      # TODO: Debug this failure
-      xit "report errors from expressions" do
+      # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
+      it "report errors from expressions" do
         expression = parse_expression("<color.undefined_method>")
         expression.validate
         expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Unknown method 'undefined_method'")
