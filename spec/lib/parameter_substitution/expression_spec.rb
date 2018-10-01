@@ -3,12 +3,12 @@
 require_relative '../../../lib/parameter_substitution/expression'
 
 describe ParameterSubstitution::Expression do
-  def context(text, options={})
+  def context(text, options = {})
     context_args = {
-      input: text,
-      mapping: {
-        "color" => "red",
-        "size" => nil,
+      input:                text,
+      mapping:              {
+        "color"   => "red",
+        "size"    => nil,
         "integer" => 1
       },
       destination_encoding: :cgi
@@ -17,7 +17,7 @@ describe ParameterSubstitution::Expression do
   end
 
   def parse_expression(parameter_expression, context_options = {})
-    parser = ParameterSubstitution::Parser.new
+    parser    = ParameterSubstitution::Parser.new
     transform = ParameterSubstitution::Transform.new(context(parameter_expression, context_options))
     transform.apply(parser.parse(parameter_expression))
   end
@@ -34,10 +34,8 @@ describe ParameterSubstitution::Expression do
         expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Unknown replacement parameter 'not_defined'")
       end
 
-      # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
       it "report errors from expressions" do
         expression = parse_expression("<color.undefined_method>")
-        expression.validate
         expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Unknown method 'undefined_method'")
       end
     end
