@@ -12,6 +12,8 @@ class TestFormatterBase
         CompareString
       when 'if_nil'
         IfNil
+      when 'json_parse'
+        JsonParse
       end
     end
 
@@ -92,5 +94,33 @@ class IfNil < TestFormatterBase
 
   def format(value)
     value.nil? ? @new_value : value
+  end
+end
+
+
+require 'json'
+
+class JsonParse < TestFormatterBase
+  def self.description
+    "attempts to parse strings as JSON. If valid, passes along the parsed object, if not valid json, or not a string, passes the json encoded value."
+  end
+
+  def self.has_parameters?
+    false
+  end
+
+  def self.encoding
+    :json
+  end
+
+  def self.format(value)
+    if value.is_a?(String)
+      JSON.parse(value)
+      value
+    else
+      value.to_json
+    end
+  rescue JSON::ParserError
+    value.to_json
   end
 end
