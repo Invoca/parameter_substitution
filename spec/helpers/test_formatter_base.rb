@@ -10,11 +10,17 @@ class TestFormatterBase
         AddPrefix
       when 'compare_string'
         CompareString
+      when 'if_nil'
+        IfNil
       end
     end
 
     def has_parameters?
       false
+    end
+
+    def encoding
+      :raw
     end
   end
 end
@@ -68,5 +74,23 @@ class CompareString < TestFormatterBase
     else
       @false_value
     end
+  end
+end
+
+class IfNil < TestFormatterBase
+  def self.has_parameters?
+    true
+  end
+
+  def self.description
+    "Takes one new_value parameter.  If the input is nil the input is replaced with new_value"
+  end
+
+  def initialize(new_value)
+    @new_value = new_value
+  end
+
+  def format(value)
+    value.nil? ? @new_value : value
   end
 end

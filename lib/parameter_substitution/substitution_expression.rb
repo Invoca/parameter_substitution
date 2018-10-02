@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'hobo_support/array'
+
 class ParameterSubstitution
   class SubstitutionExpression
     attr_accessor :parameter_name, :method_calls, :context
