@@ -12,7 +12,7 @@ require "parameter_substitution/substitution_expression"
 require "parameter_substitution/text_expression"
 require "parameter_substitution/expression"
 require "parameter_substitution/configuration"
-require 'active_support'
+require 'active_support/all'
 
 class ParameterSubstitution
   class SubstitutionError < StandardError; end

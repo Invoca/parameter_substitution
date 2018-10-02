@@ -4,7 +4,7 @@ require_relative '../../../lib/parameter_substitution/method_call_expression'
 
 describe ParameterSubstitution::MethodCallExpression do
   def parse_method_call(format_expression)
-    parser = ParameterSubstitution::Parser.new
+    parser    = ParameterSubstitution::Parser.new
     transform = ParameterSubstitution::Transform.new(:cgi)
     transform.apply(parser.method_call.parse(format_expression))
   end
@@ -17,26 +17,22 @@ describe ParameterSubstitution::MethodCallExpression do
       expect([1, 3]).to eq(expression.arguments)
     end
 
-    # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
     it "be able to call methods without arguments" do
       expression = parse_method_call("downcase")
       expect("mixed_case").to eq(expression.call_method("MiXeD_CaSE"))
     end
 
-    # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
     it "be able to call methods with arguments" do
       expression = parse_method_call('add_prefix("cheese")')
       expect("cheese and crackers").to eq(expression.call_method(" and crackers"))
     end
 
     context "validate" do
-      # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
       it "report unknown methods" do
         expression = parse_method_call('not_a_method("cheese")')
         expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Unknown method 'not_a_method'")
       end
 
-      # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
       it "report report when a method with no arguments is called with arguments" do
         expression = parse_method_call('downcase("cheese")')
         expect { expression.validate }.to raise_exception(
@@ -45,10 +41,12 @@ describe ParameterSubstitution::MethodCallExpression do
                                           )
       end
 
-      # TODO: https://github.com/Invoca/web/blob/f3b73649b20509cd2eec53b0abef0d9ea57afee6/config/initializers/parameter_substitution.rb#L1-L3
       it "report report when a method with arguments is called with no arguments" do
         expression = parse_method_call('compare_string')
-        expect { expression.validate }.to raise_exception(ParameterSubstitution::ParseError, "Wrong number of arguments for 'compare_string' expected 3, received 0")
+        expect { expression.validate }.to raise_exception(
+                                            ParameterSubstitution::ParseError,
+                                            "Wrong number of arguments for 'compare_string' expected 3, received 0"
+                                          )
       end
     end
   end
