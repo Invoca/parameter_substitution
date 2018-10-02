@@ -1,5 +1,6 @@
-# require_relative '../helpers/downcase'
+# frozen_string_literal: true
 
+# All formatters should inherit from this base class
 class TestFormatterBase
   class << self
     def find(name)
@@ -26,6 +27,10 @@ class TestFormatterBase
     end
   end
 end
+
+#
+# Formatters
+#
 
 class Downcase < TestFormatterBase
   def self.description
