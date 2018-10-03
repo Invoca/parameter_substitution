@@ -75,14 +75,10 @@ If you are working in this subsystem, consider the following improvements while 
  are handled differently for keys vs values and if the subtitution is the full string or part of the string.  I don't think this behavior
  is desired by customers and a more consistent handling would make for much cleaner code.  (See any code that is handling the :raw destination format)
 
-#TODO - update for RSpec
 ## Running tests...
-The following command can be used to run all of the parameter substitution tests and the most common clients.  
-
 ```
-bundle exec ruby -I.:test -e "ARGV.each{|f| require f}" test/lib/parameter_substitution/*.rb test/lib/token_replacement_test.rb test/lib/json_params_substituter_test.rb test/unit/reports/column_format/*.rb test/lib/parameter_substitution_test.rb
+bundle exec rake test
 ```
-
 ## Integration Testing
 When we introduced this subsystem, we created a way to confirm that the behavior is the same with the new code as it is in production.  
  This may be helpful in future iterations.  The **ActivityCapture** class (script/integration_testing/activity_capture) can be used to 
