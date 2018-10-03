@@ -102,9 +102,7 @@ class IfNil < TestFormatterBase
   end
 end
 
-
 require 'json'
-
 class JsonParse < TestFormatterBase
   def self.description
     "attempts to parse strings as JSON. If valid, passes along the parsed object, if not valid json, or not a string, passes the json encoded value."
