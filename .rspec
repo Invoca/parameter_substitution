@@ -1,3 +1,5 @@
---format documentation
---color
 --require spec_helper
+--color
+--format RspecJunitFormatter
+--out spec/reports/rspec.xml
+--format documentation

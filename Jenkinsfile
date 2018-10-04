@@ -13,6 +13,7 @@ pipeline {
       }
     post {
       always {
+        junit 'spec/reports/rspec.xml'
         publishHTML([
           allowMissing: false,
           alwaysLinkToLastBuild: false,
