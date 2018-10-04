@@ -1,41 +1,67 @@
 # ParameterSubstitution
 
-Handles parsing an input strings with embedded substitution parameters and replacing them with values from a provided mapping.  
-The substitution can be formatted using a syntax that looks like method calls.  For example, the following will return "it is a WINDY day".
+Handles parsing an input string with embedded substitution parameters and replacing them with values from a provided mapping.  
+The substitution can be formatted using a syntax that looks like method calls.  For example, the following will return `"it is a WINDY day"`.
 
+```ruby
+ParameterSubstitution.evaluate( input: "it is a <weather.upper> day", mapping: { "weather" => "windy" } )
 ```
-  ParameterSubstitution.evaluate( input: "it is a <weather.upper> day", mapping: { "weather" => "windy" } )
-```
-
-The call to upper formats the input by calling the format method on the class **Reports::ColumnFormat::Upper**.
-
-Formats can take arguments and can be chained.  For example, the following formats the time using strftime to find just am or pm, and then comares that to say morning or evening.
-
-```
-  ParameterSubstitution.evaluate( 
-    input: "good <time.date_time_strftime("%p").compare_string("am", "morning", "evening")>", 
-    mapping: { "time" => Time.now.to_s } )
-  
-```    
-
-The substitution behavior is very configurable because it is used in many different environments.  The configuration is passed through named arguments to the evaluate method.  These named arguments have defaults that should work for most conditions.
-
 
 ## Installation
 
 Add this line to your application's Gemfile:
-
 ```ruby
 gem 'parameter_substitution'
 ```
 
 And then execute:
-
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
+```
+$ gem install parameter_substitution
+```
 
-    $ gem install parameter_substitution
+
+## Configuration
+
+`ParameterSubstitution` is configured by supplying a `method_call_base_class`:
+```ruby
+ParameterSubstitution.configure do |config|
+  config.method_call_base_class = FormatterBaseClass
+end
+```
+
+So, in the `"it is a WINDY day"` example at the beginning of this README, the call to `upper` formats the input by calling the `format` method of the designated subclass of the `method_call_base_class`.
+In this case it would be `FormatterBaseClass::Upper`.
+```ruby
+class Upper < FormatterBaseClass
+  def self.description
+    "Converts to string and returns all characters uppercased, preserves nil"
+  end
+
+  def self.format(value)
+    value && value.to_s.upcase
+  end
+end
+```
+
+See `spec/spec_helper.rb` and `spec/helpers/` for more examples.
+
+
+## Usage
+Formats can take arguments and can be chained.  For example, the following formats the time using strftime to find just am or pm, and then compares that to say morning or evening.
+
+```ruby
+ParameterSubstitution.evaluate(
+  input:   "good <time.date_time_strftime("%p").compare_string("am", "morning", "evening")>",
+  mapping: { "time" => Time.now.to_s }
+)
+```
+
+The substitution behavior is very configurable because it is used in many different environments.  The configuration is passed through named arguments to the evaluate method.  These named arguments have defaults that should work for most conditions.
 
 
 ## Design
@@ -44,14 +70,14 @@ Or install it yourself as:
 
 ![ParameterSubstitutionDesign](./parameter_subsitution_design.png)
 
-The **ParameterSubstituion** module exposes the public interface for this subsystem.  All other classes are internal and should be considered private.
-  
+The **ParameterSubstitution** module exposes the public interface for this subsystem.  All other classes are internal and should be considered private.
+
 When evaluate is called, the module constructs a **Parser** to parse the input into a syntax tree.  Parser is implemented using the 
 [Parslet](http://kschiess.github.io/parslet/) gem, which is pretty great.   The output from the parser is a ruby hash that describes the input.
-  
+
 The module then constructs a **Transform** to convert this syntax tree to an **Expression** that can be evaluated.  
 An Expression has a list of sub expressions that are either **TextExpressions**, which simply returns the text when evaluated, or **SubstitutionExpressions** which return the formatted value from the mapping when called.  
-    
+
 SubstitutionExpressions have a list of **MethodCallExpressions**.   These expressions call the corresponding class in 'app/models/reporting/column_formats'  
 
 **Context** is a helper class that is used to pass around the set of options for the current parameter substitution.  
