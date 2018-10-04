@@ -6,8 +6,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 Gem::Specification.new do |spec|
   spec.name         = "parameter_substitution"
   spec.version      = "0.1.0"
-  spec.authors      = ["Collin McGrath"]
-  spec.email        = ["cmcgrath@invoca.com"]
+  spec.authors      = ["Bob Smith", "James Ebentier"]
+  spec.email        = ["bob@invoca.com", "jebentier@invoca.com", "cmcgrath@invoca.com"]
 
   spec.summary     = 'Handles parsing an input strings with embedded substitution parameters and replacing them with values from a provided mapping.'
   spec.description = 'The substitution can be formatted using a syntax that looks like method calls'
