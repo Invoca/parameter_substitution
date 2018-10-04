@@ -174,7 +174,7 @@ DEPENDENCIES
   bundler (~> 1.12)
   guard-rspec
   hobo_support
-  invoca-utils (= 0.0.3)
+  invoca-utils (~> 0.0.3)
   parameter_substitution!
   parslet (~> 1.8)
   pry-byebug
