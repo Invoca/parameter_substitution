@@ -38,7 +38,6 @@ describe ParameterSubstitution do
         expect do
           config.method_call_base_class = DumbClass
         end.to raise_exception(StandardError, /CONFIGURATION ERROR: base_class DumbClass must have a find method/)
-        # TODO: Confirm namespace and error class differences are okay
       end
     end
 
