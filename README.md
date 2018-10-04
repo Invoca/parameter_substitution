@@ -66,92 +66,9 @@ If you are working in this subsystem, consider the following improvements while 
  * The behavior for TokenReplacement.substitute_params is very odd.  Missing substitution parameters and nil subsitution parameters are handled differently for keys vs values and if the subtitution is the full string or part of the string.  I don't think this behavior is desired by customers and a more consistent handling would make for much cleaner code.  (See any code that is handling the :raw destination format)
 
 ## Running tests...
+
 ```
 bundle exec rake test
-```
-## Integration Testing
-When we introduced this subsystem, we created a way to confirm that the behavior is the same with the new code as it is in production.
-This may be helpful in future iterations.  The **ActivityCapture** class (script/integration_testing/activity_capture) can be used to grab all method calls matching a pattern and save the inputs and the outputs to a yml file.
-   
-The following uses AcivityCapture to capture parameter substitution activity for the trackign pixesl associated with the last 1000 calls in production. 
- 
-To re-run this test:
- 
-1) From script console on a production server, paste in the contents of script/ingegration_testing/activity_capture.rb, and then the following:
- 
- ```
-require "./script/integration_testing/activity_capture"
-
-module Webhooks
-  module FireStandard
-    def get_webhook_request(call)      
-      request = case tracking_pixel_method
-      when :GET, :GoogleAnalytics
-        StandardRequest.new(:get, :form_url, call, self)
-      when :POST
-        StandardRequest.new(:post, :form_url, call, self)
-      when :XML
-        StandardRequest.new(:post, :xml, call, self)
-      when :JsonPost
-        StandardRequest.new(:post, :json, call, self)
-      when :Plugin
-        "#{plugin_name.classify}::Webhook".constantize.new(call, self)
-      else
-        nil
-      end
-    end
-  end
-end
-
-
-# Find the last call for all active pixels and the most recent 500 calls.  
-# We are skipping SaleForce because they do not use substitution.
-pixel_xuids = TrackingPixel.active.where.not(last_processed_transaction_xuid: "").where.not(tracking_pixel_method: :SalesForce).pluck(:last_processed_transaction_xuid)
-recent_call_xuids = Call.last(500).map { |c| c.xuid }
-xuids = (pixel_xuids + recent_call_xuids).sort.uniq  
-calls = xuids.map { |xuid| Call.find_by_xuid(xuid) rescue nil }.compact; nil
-
-# Capture substitution activity for all pixels on all of these calls... 
-capture_map = {
-  TokenReplacement => [:replace_tokens, :replace_xml_tokens, :find_tokens, :substitute_params],
-  JsonParamsSubstituter => [:substitute]
-}
-
-ActivityCapture.save_activity("token_replacement_activity.yml", capture_map) do
-  calls.each do |c|
-    tps = (c.send(:unreliable_webhooks) + c.send(:reliable_webhooks)).flatten.select { |tp| tp.is_active? }
-    tps.each do |tp|
-      begin
-        request = tp.get_webhook_request(c)
-        request&.send(:info)
-      rescue => ex
-        puts ex.inspect
-      end
-    end
-  end
-end
-
-```
-
-2) Use scp to copy the "token_Replacement_activity.yml" file to your local web repo.
-
-3) On script/console from your local web repo, run the following:
- 
-```
-require "./script/integration_testing/activity_capture"
-capture_map = {
-  TokenReplacement => [:replace_tokens, :replace_xml_tokens, :find_tokens, :substitute_params],
-  JsonParamsSubstituter => [:substitute]
-}
-
-ActivityCapture.diff_activity("log/token_replacement_activity.yml", capture_map)
-```
-
-The above will re-run the above commands on the new code and report any differences.  To save space, the output does not print the full input parameters, but it does report the index.  To find the input you can use the following:
-
-```
-captures = YAML.load(File.read("token_replacement_activity.yml")); nil
-ap captures[index]
 ```
 
 ## Development
