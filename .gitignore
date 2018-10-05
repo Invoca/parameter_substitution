@@ -5,5 +5,7 @@
 /doc/
 /pkg/
 /spec/reports/
+/coverage/
 /tmp/
 .idea
+.rubocop-http*
