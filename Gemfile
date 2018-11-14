@@ -11,6 +11,14 @@ group :test do
 end
 
 group :development do
+  gem 'activesupport', '~> 4.0'
+  gem 'builder'
+  gem 'bundler',       '~> 1.12'
   gem 'guard-rspec'
+  gem 'hobo_support'
+  gem 'invoca-utils',  '~> 0.0.3'
+  gem 'parslet',       '~> 1.8'
   gem 'pry-byebug'
+  gem 'rake',          '~> 10.0'
+  gem 'rspec',         '~> 3.0'
 end
