@@ -8,6 +8,6 @@ class Downcase < TestFormatterBase
   end
 
   def self.format(value)
-    value && value.to_s.downcase
+    value&.to_s&.downcase
   end
 end

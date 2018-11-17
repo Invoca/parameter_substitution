@@ -45,11 +45,11 @@ describe ParameterSubstitution::Encoder do
       expect("[1]").to eq(ParameterSubstitution::Encoder.encode([1], :json, :raw, "not used", false))
       expect("[1]").to eq(ParameterSubstitution::Encoder.encode([1], :json, :raw, "not used", true))
 
-      expect("[1,2]").to eq(ParameterSubstitution::Encoder.encode([1,2], :json, :raw, "not used", false))
-      expect("[1,2]").to eq(ParameterSubstitution::Encoder.encode([1,2], :json, :raw, "not used", true))
+      expect("[1,2]").to eq(ParameterSubstitution::Encoder.encode([1, 2], :json, :raw, "not used", false))
+      expect("[1,2]").to eq(ParameterSubstitution::Encoder.encode([1, 2], :json, :raw, "not used", true))
 
-      expect("[\"1\",\"2\"]").to eq(ParameterSubstitution::Encoder.encode(["1","2"], :json, :raw, "not used", false))
-      expect("[\\\"1\\\",\\\"2\\\"]").to eq(ParameterSubstitution::Encoder.encode(["1","2"], :json, :raw, "not used", true))
+      expect("[\"1\",\"2\"]").to eq(ParameterSubstitution::Encoder.encode(["1", "2"], :json, :raw, "not used", false))
+      expect("[\\\"1\\\",\\\"2\\\"]").to eq(ParameterSubstitution::Encoder.encode(["1", "2"], :json, :raw, "not used", true))
     end
   end
 end

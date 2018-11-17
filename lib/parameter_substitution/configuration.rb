@@ -6,6 +6,7 @@ class ParameterSubstitution
 
     def method_call_base_class=(base_class)
       raise StandardError, "CONFIGURATION ERROR: base_class #{base_class} must have a find method" unless base_class.respond_to?(:find)
+
       @method_call_base_class = base_class
     end
   end

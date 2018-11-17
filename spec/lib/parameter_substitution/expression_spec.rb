@@ -5,10 +5,10 @@ require_relative '../../../lib/parameter_substitution/expression'
 describe ParameterSubstitution::Expression do
   def context(text, options = {})
     context_args = {
-      input:                text,
-      mapping:              {
-        "color"   => "red",
-        "size"    => nil,
+      input: text,
+      mapping: {
+        "color" => "red",
+        "size" => nil,
         "integer" => 1
       },
       destination_encoding: :cgi

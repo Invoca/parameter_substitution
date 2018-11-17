@@ -5,9 +5,9 @@ require_relative '../../lib/parameter_substitution'
 describe ParameterSubstitution do
   def default_mapping
     {
-      'foo'                => 'Bar',
-      'black'              => 'white',
-      'integer'            => 123,
+      'foo' => 'Bar',
+      'black' => 'white',
+      'integer' => 123,
       'has nonsense . < >' => 'Worked!'
     }
   end
@@ -18,7 +18,7 @@ describe ParameterSubstitution do
   end
 
   def assert_parse_result(expected_result, input, options = {})
-    result, error = ParameterSubstitution.evaluate(**({ input: input, mapping: @mapping }.merge(options)))
+    result, error = ParameterSubstitution.evaluate(**{ input: input, mapping: @mapping }.merge(options))
     expect(error).to be_nil
     expect(result).to eq(expected_result), "on line #{caller(2..2)}"
   end
@@ -59,8 +59,8 @@ describe ParameterSubstitution do
   context "parameter expression" do
     before do
       @mapping = {
-        'foo'     => 'Bar',
-        'black'   => 'white',
+        'foo' => 'Bar',
+        'black' => 'white',
         'integer' => 123
       }
     end

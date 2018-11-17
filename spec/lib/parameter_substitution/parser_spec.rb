@@ -96,9 +96,9 @@ describe ParameterSubstitution::Parser do
           :parameter,
           "substitution_parameter.method_call(123,\"abc\")",
           parameter_name: "substitution_parameter",
-          method_calls:   [{
+          method_calls: [{
             method_call: "method_call",
-            arg_list:    [{ int_arg: "123" }, { string_arg: "abc" }]
+            arg_list: [{ int_arg: "123" }, { string_arg: "abc" }]
           }]
         )
       end
@@ -108,16 +108,16 @@ describe ParameterSubstitution::Parser do
           :parameter,
           "substitution parameter",
           parameter_name: "substitution parameter",
-          method_calls:   []
+          method_calls: []
         )
 
         assert_parsed_rule(
           :parameter,
           "substitution parameter.method_call(123,\"abc\")",
           parameter_name: "substitution parameter",
-          method_calls:   [{
+          method_calls: [{
             method_call: "method_call",
-            arg_list:    [{ int_arg: "123" }, { string_arg: "abc" }]
+            arg_list: [{ int_arg: "123" }, { string_arg: "abc" }]
           }]
         )
       end
@@ -130,7 +130,7 @@ describe ParameterSubstitution::Parser do
           :parameter,
           "this#{slash}<as#{slash}>#{slash}.embedded",
           parameter_name: "this\\<as\\>\\.embedded",
-          method_calls:   []
+          method_calls: []
         )
       end
 
@@ -139,9 +139,9 @@ describe ParameterSubstitution::Parser do
           :parameter,
           "substitution_parameter.method_call(nil)",
           parameter_name: "substitution_parameter",
-          method_calls:   [{
+          method_calls: [{
             method_call: "method_call",
-            arg_list:    [{ nil_arg: "nil" }]
+            arg_list: [{ nil_arg: "nil" }]
           }]
         )
       end
@@ -156,10 +156,10 @@ describe ParameterSubstitution::Parser do
             :parameter,
             input,
             parameter_name: "substitution_parameter",
-            method_calls:   [
+            method_calls: [
               {
                 method_call: "method_call",
-                arg_list:    [{ int_arg: "123" }, { string_arg: "abc" }]
+                arg_list: [{ int_arg: "123" }, { string_arg: "abc" }]
               }
             ]
           )
@@ -187,7 +187,7 @@ describe ParameterSubstitution::Parser do
         expected = {
           expression: [{
             parameter_name: "substitution_parameter",
-            method_calls:   [{ method_call: "method_call1" }, { method_call: "method_call2" }]
+            method_calls: [{ method_call: "method_call1" }, { method_call: "method_call2" }]
           }]
         }
 
@@ -213,7 +213,7 @@ describe ParameterSubstitution::Parser do
           expression: [
             { text: "preamble" },
             { parameter_name: "substitution_param",
-              method_calls:   [
+              method_calls: [
                 { method_call: "method_call1", arg_list: [{ string_arg: "arg1" }, { int_arg: "123" }] },
                 { method_call: "method_call2" }
               ] },
@@ -228,11 +228,11 @@ describe ParameterSubstitution::Parser do
           expression: [
             { text: "preamble" },
             { parameter_name: "substitution_param",
-              method_calls:   [
+              method_calls: [
                 { method_call: "method_call", arg_list: [
                   { raw_expression: [
                     { parameter_name: "substitution_arg",
-                      method_calls:   [] }
+                      method_calls: [] }
                   ] }
                 ] }
               ] },
@@ -247,11 +247,11 @@ describe ParameterSubstitution::Parser do
           expression: [
             { text: "preamble" },
             { parameter_name: "substitution_param",
-              method_calls:   [
+              method_calls: [
                 { method_call: "method_call1", arg_list: [
                   { raw_expression: [
                     { parameter_name: "substitution_arg",
-                      method_calls:   [
+                      method_calls: [
                         { method_call: "method_call2" }
                       ] }
                   ] }
@@ -268,13 +268,13 @@ describe ParameterSubstitution::Parser do
           expression: [
             { text: "preamble" },
             { parameter_name: "substitution_param",
-              method_calls:   [
+              method_calls: [
                 { method_call: "method_call1", arg_list: [
                   { raw_expression: [
                     { parameter_name: "substitution_arg",
-                      method_calls:   [
+                      method_calls: [
                         { method_call: "method_call2",
-                          arg_list:    [{ string_arg: "string_arg" }] }
+                          arg_list: [{ string_arg: "string_arg" }] }
                       ] }
                   ] }
                 ] }
@@ -291,7 +291,7 @@ describe ParameterSubstitution::Parser do
           expression: [
             { text: "preamble" },
             { parameter_name: "substitution_param",
-              method_calls:   [
+              method_calls: [
                 { method_call: "method_call1", arg_list: [{ string_arg: "arg1" }, { int_arg: "123" }] },
                 { method_call: "method_call2" }
               ] },

@@ -12,6 +12,12 @@ require "parameter_substitution/substitution_expression"
 require "parameter_substitution/text_expression"
 require "parameter_substitution/expression"
 require "parameter_substitution/configuration"
+require "parameter_substitution/formatters/base"
+require "parameter_substitution/formatters/date_time_format"
+Dir[File.dirname(__FILE__) + '/parameter_substitution/formatters/*.rb'].each do |file|
+  require file
+end
+
 require 'active_support/all'
 
 class ParameterSubstitution

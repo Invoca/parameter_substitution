@@ -7,13 +7,13 @@ require 'builder'
 class ParameterSubstitution
   class Encoder
     ENCODINGS = {
-      cgi:             "CGI encode - for html parameters",
-      html:            "HTML encode - for html content",
-      xml:             "XML encode",
-      angle_brackets:  "Content converted to a string and placed in angle brackets",
-      json:            "JSON encode",
-      raw:             "content is not changed",
-      text:            "content is converted to a string"
+      cgi: "CGI encode - for html parameters",
+      html: "HTML encode - for html content",
+      xml: "XML encode",
+      angle_brackets: "Content converted to a string and placed in angle brackets",
+      json: "JSON encode",
+      raw: "content is not changed",
+      text: "content is converted to a string"
     }.keys
 
     class << self
