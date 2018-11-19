@@ -9,7 +9,7 @@ pipeline {
       agent { docker 'ruby:2.4.2' }
       steps {
         sh "bundle install"
-        sh "bundle exec rake test"
+        sh "TZ=America/Los_Angeles bundle exec rake test"
       }
     post {
       always {
