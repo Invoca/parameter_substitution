@@ -34,8 +34,8 @@ describe ParameterSubstitution::Formatters::Manager do
     end
 
     it "return formatter class for key" do
-      expect(@format_class.find("base")).to eq("ParameterSubstitution::Formatters::Base")
-      expect(CustomManager.find("test")).to eq("TestClass")
+      expect(@format_class.find("base")).to eq(ParameterSubstitution::Formatters::Base)
+      expect(CustomManager.find("test")).to eq("TestClass".constantize)
     end
   end
 end

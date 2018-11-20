@@ -4,6 +4,14 @@ class ParameterSubstitution
   module Formatters
     class Base
       class << self
+        def description
+          raise NotImplementedError, "Derived classes must implement"
+        end
+
+        def format(_value)
+          raise NotImplementedError, "Derived classes must implement"
+        end
+
         def key
           name.split('::').last.gsub(/Format/, '').underscore
         end
@@ -18,6 +26,7 @@ class ParameterSubstitution
           :raw
         end
 
+        # TODO: Move out of the base class.
         def parse_duration(duration)
           if duration.is_a?(String)
             if duration =~ /([\d]{1,2})\:([\d]{1,2})\:([\d]{1,2})/

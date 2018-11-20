@@ -13,6 +13,9 @@ require 'helpers/json_parse'
 
 SimpleCov.start
 
+class TestClass < ParameterSubstitution::Formatters::Base
+end
+
 ParameterSubstitution.configure do |config|
-  config.method_call_base_class = TestFormatterBase
+  config.custom_formatters = { "test" => "TestClass" }
 end

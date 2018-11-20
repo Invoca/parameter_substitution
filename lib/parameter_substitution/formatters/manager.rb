@@ -5,11 +5,11 @@ class ParameterSubstitution
     class Manager
       class << self
         def find(key)
-          all_formats[key]
+          all_formats[key.to_s]&.constantize
         end
 
         def all_formats
-          default_formatter_mapping
+          default_formatter_mapping.merge(ParameterSubstitution.config&.custom_formatters || {})
         end
 
         def default_formatter_mapping
