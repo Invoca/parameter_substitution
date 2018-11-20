@@ -8,6 +8,11 @@ describe ParameterSubstitution::Formatters::Base do
       @format_class = ParameterSubstitution::Formatters::Base
     end
 
+    it "requires derived classes to implement methods" do
+      expect { @format_class.description }.to          raise_exception(NotImplementedError)
+      expect { @format_class.format("base") }.to raise_exception(NotImplementedError)
+    end
+
     it "have a key" do
       expect(@format_class.key).to eq("base")
     end

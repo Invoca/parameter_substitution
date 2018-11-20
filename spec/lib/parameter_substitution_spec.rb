@@ -28,20 +28,8 @@ describe ParameterSubstitution do
       class DumbClass
       end
 
-      class DumbClassWithFind
-        def self.find(_key); end
-      end
-
       class SmartClass < ParameterSubstitution::Formatters::Base
         def self.find(_key); end
-      end
-    end
-
-    it "throw error if custom formatters have no find method" do
-      ParameterSubstitution.configure do |config|
-        expect do
-          config.custom_formatters = { "dumb_class" => "DumbClass", "smart_class" => "SmartClass" }
-        end.to raise_exception(StandardError, "CONFIGURATION ERROR: custom_formatters (dumb_class: DumbClass) must have a find method.")
       end
     end
 
@@ -49,11 +37,11 @@ describe ParameterSubstitution do
       ParameterSubstitution.configure do |config|
         exception_expectations = [
           StandardError,
-          "CONFIGURATION ERROR: custom_formatters (dumb_class_with_find: DumbClassWithFind) must inherit from ParameterSubstitution::Formatters::Base and did not."
+          "CONFIGURATION ERROR: custom_formatters (dumb_class: DumbClass) must inherit from ParameterSubstitution::Formatters::Base and did not."
         ]
 
         expect do
-          config.custom_formatters = { "dumb_class_with_find" => "DumbClassWithFind", "smart_class" => "SmartClass" }
+          config.custom_formatters = { "dumb_class" => "DumbClass", "smart_class" => "SmartClass" }
         end.to raise_exception(*exception_expectations)
       end
     end

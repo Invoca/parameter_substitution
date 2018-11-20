@@ -9,8 +9,6 @@ require 'helpers/test_formatter_base'
 SimpleCov.start
 
 class TestClass < ParameterSubstitution::Formatters::Base
-  def self.find(_key)
-  end
 end
 
 ParameterSubstitution.configure do |config|
