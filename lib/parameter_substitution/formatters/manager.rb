@@ -9,14 +9,11 @@ class ParameterSubstitution
         end
 
         def all_formats
-          default_formatter_mapping.merge(ParameterSubstitution.config&.custom_formatters || {})
+          default_formats.merge(custom_formatters_if_any)
         end
 
-        def default_formatter_mapping
-          unless defined?(@default_formatter_mapping)
-            @default_formatter_mapping = formatter_class_hash(__FILE__, ["ParameterSubstitution", "Formatters"])
-          end
-          @default_formatter_mapping
+        def default_formats
+          @default_formats ||= formatter_class_hash(__FILE__, ["ParameterSubstitution", "Formatters"])
         end
 
         def formatter_class_hash(manager_file, module_array)
@@ -25,6 +22,12 @@ class ParameterSubstitution
             class_name = (module_array + [class_key.camelize.to_s]).join('::')
             [class_key, class_name]
           end]
+        end
+
+        private
+
+        def custom_formatters_if_any
+          ParameterSubstitution.config&.custom_formatters || {}
         end
       end
     end
