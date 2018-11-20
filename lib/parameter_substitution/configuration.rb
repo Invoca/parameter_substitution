@@ -5,12 +5,21 @@ class ParameterSubstitution
     attr_reader :custom_formatters
 
     def custom_formatters=(custom_formatters)
+      check_that_classes_are_classes(custom_formatters)
       check_for_correct_base_class(custom_formatters)
 
       @custom_formatters = custom_formatters
     end
 
     private
+
+    def check_that_classes_are_classes(custom_formatters)
+      bad_formatters = reject_formatters_by_condition(custom_formatters) do |klass|
+        klass.is_a?(Class)
+      end
+
+      raise_if_any_bad(bad_formatters, "be of type Class")
+    end
 
     def check_for_correct_base_class(custom_formatters)
       bad_formatters = reject_formatters_by_condition(custom_formatters) do |klass|
@@ -22,7 +31,7 @@ class ParameterSubstitution
 
     def reject_formatters_by_condition(custom_formatters)
       custom_formatters.reject do |_formatter, klass|
-        yield(klass.constantize)
+        yield(klass)
       end
     end
 

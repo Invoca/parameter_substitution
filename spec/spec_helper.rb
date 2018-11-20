@@ -12,5 +12,5 @@ class TestClass < ParameterSubstitution::Formatters::Base
 end
 
 ParameterSubstitution.configure do |config|
-  config.custom_formatters = { "test" => "TestClass" }
+  config.custom_formatters = { "test" => TestClass }
 end

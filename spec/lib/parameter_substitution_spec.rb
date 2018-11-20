@@ -41,7 +41,20 @@ describe ParameterSubstitution do
         ]
 
         expect do
-          config.custom_formatters = { "dumb_class" => "DumbClass", "smart_class" => "SmartClass" }
+          config.custom_formatters = { "dumb_class" => DumbClass, "smart_class" => SmartClass }
+        end.to raise_exception(*exception_expectations)
+      end
+    end
+
+    it "checks that custom formatters are of the correct type" do
+      ParameterSubstitution.configure do |config|
+        exception_expectations = [
+          StandardError,
+          "CONFIGURATION ERROR: custom_formatters (dumb_class: DumbClass) must be of type Class."
+        ]
+
+        expect do
+          config.custom_formatters = { "dumb_class" => "DumbClass", "smart_class" => SmartClass }
         end.to raise_exception(*exception_expectations)
       end
     end

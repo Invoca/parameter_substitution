@@ -10,13 +10,13 @@ describe ParameterSubstitution::Formatters::Manager do
 
     it "provide default formatter class mapping" do
       expect(@format_class.default_formats).to be_a(Hash)
-      expect(@format_class.default_formats["base"]).to eq("ParameterSubstitution::Formatters::Base")
+      expect(@format_class.default_formats["base"]).to eq(ParameterSubstitution::Formatters::Base)
     end
 
     it "includes formatter class mappings from the config" do
       expect(@format_class.all_formats).to be_a(Hash)
-      expect(@format_class.all_formats["base"]).to eq("ParameterSubstitution::Formatters::Base")
-      expect(@format_class.all_formats["test"]).to eq("TestClass")
+      expect(@format_class.all_formats["base"]).to eq(ParameterSubstitution::Formatters::Base)
+      expect(@format_class.all_formats["test"]).to eq(TestClass)
     end
 
     it "return formatter class for key" do

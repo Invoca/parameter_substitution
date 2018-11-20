@@ -5,7 +5,7 @@ class ParameterSubstitution
     class Manager
       class << self
         def find(key)
-          all_formats[key.to_s]&.constantize
+          all_formats[key.to_s]
         end
 
         def all_formats
@@ -19,7 +19,7 @@ class ParameterSubstitution
         def formatter_class_hash(manager_file, module_array)
           Hash[Dir[Pathname.new(manager_file).dirname + '*.rb'].map do |filename|
             class_key = File.basename(filename).chomp(".rb")
-            class_name = (module_array + [class_key.camelize.to_s]).join('::')
+            class_name = (module_array + [class_key.camelize.to_s]).join('::').constantize
             [class_key, class_name]
           end]
         end
