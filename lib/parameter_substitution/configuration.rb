@@ -14,24 +14,31 @@ class ParameterSubstitution
     private
 
     def check_for_find_method(custom_formatters)
-      bad_formatters = custom_formatters.reject do |_formatter, klass|
-        klass.constantize.respond_to?(:find)
+      bad_formatters = reject_formatters_by_condition(custom_formatters) do |klass|
+        klass.respond_to?(:find)
       end
 
-      if bad_formatters.any?
-        log_context = bad_formatters.map { |formatter, klass| [formatter, klass].join(": ") }.join(", ")
-        raise StandardError, "CONFIGURATION ERROR: custom_formatters (#{log_context}) must have a find method."
-      end
+      raise_for_bad_formatters_if_any(bad_formatters, "have a find method")
     end
 
     def check_for_correct_base_class(custom_formatters)
-      bad_formatters = custom_formatters.reject do |_formatter, klass|
-        klass.constantize.ancestors.include?(ParameterSubstitution::Formatters::Base)
+      bad_formatters = reject_formatters_by_condition(custom_formatters) do |klass|
+        klass.ancestors.include?(ParameterSubstitution::Formatters::Base)
       end
 
+      raise_for_bad_formatters_if_any(bad_formatters, "inherit from ParameterSubstitution::Formatters::Base and did not")
+    end
+
+    def reject_formatters_by_condition(custom_formatters)
+      custom_formatters.reject do |_formatter, klass|
+        yield(klass.constantize)
+      end
+    end
+
+    def raise_for_bad_formatters_if_any(bad_formatters, failure_reason)
       if bad_formatters.any?
         log_context = bad_formatters.map { |formatter, klass| [formatter, klass].join(": ") }.join(", ")
-        raise StandardError, "CONFIGURATION ERROR: custom_formatters (#{log_context}) must inherit from ParameterSubstitution::Formatters::Base and did not."
+        raise StandardError, "CONFIGURATION ERROR: custom_formatters (#{log_context}) must #{failure_reason}."
       end
     end
   end
