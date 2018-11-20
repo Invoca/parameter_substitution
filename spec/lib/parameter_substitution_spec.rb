@@ -23,36 +23,39 @@ describe ParameterSubstitution do
     expect(result).to eq(expected_result), "on line #{caller(2..2)}"
   end
 
-  before do
-    ParameterSubstitution.configure do |config|
-      config.method_call_base_class = TestFormatterBase
-    end
-  end
-
   context "configuration" do
-    it "throw error if configured base class has no find method" do
+    before :all do
       class DumbClass
       end
 
-      ParameterSubstitution.configure do |config|
-        expect do
-          config.method_call_base_class = DumbClass
-        end.to raise_exception(StandardError, /CONFIGURATION ERROR: base_class DumbClass must have a find method/)
+      class DumbClassWithFind
+        def self.find(_key); end
+      end
+
+      class SmartClass < ParameterSubstitution::Formatters::Base
+        def self.find(_key); end
       end
     end
 
-    it "should store reference to base class and be able to call its find method" do
-      class SmartClass
-        def self.find(name)
-          name
-        end
-      end
-
+    it "throw error if custom formatters have no find method" do
       ParameterSubstitution.configure do |config|
-        config.method_call_base_class = SmartClass
+        expect do
+          config.custom_formatters = { "dumb_class" => "DumbClass", "smart_class" => "SmartClass" }
+        end.to raise_exception(StandardError, "CONFIGURATION ERROR: custom_formatters (dumb_class: DumbClass) must have a find method.")
       end
+    end
 
-      expect(ParameterSubstitution.config.method_call_base_class.find('name')).to eq('name')
+    it "throw error if custom formatters do not have the correct superclass" do
+      ParameterSubstitution.configure do |config|
+        exception_expectations = [
+          StandardError,
+          "CONFIGURATION ERROR: custom_formatters (dumb_class_with_find: DumbClassWithFind) must inherit from ParameterSubstitution::Formatters::Base and did not."
+        ]
+
+        expect do
+          config.custom_formatters = { "dumb_class_with_find" => "DumbClassWithFind", "smart_class" => "SmartClass" }
+        end.to raise_exception(*exception_expectations)
+      end
     end
   end
 
