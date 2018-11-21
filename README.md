@@ -62,8 +62,6 @@ The substitution behavior is very configurable because it is used in many differ
 
 ## Design
 
-[Design Drawing](https://docs.google.com/drawings/d/1A1nQVw_oh0dfN52pHNX19NtuEB5RY7RpM6Fv9bToGV4/edit)
-
 ![ParameterSubstitutionDesign](./parameter_subsitution_design.png)
 
 The **ParameterSubstitution** module exposes the public interface for this subsystem.  All other classes are internal and should be considered private.
