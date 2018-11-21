@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bump'
+
+master_repo_location = ARGV[0]
+new_version          = Bump::Bump.current
+master_version       = `cd #{master_repo_location} && bundle exec bump current`
+
+puts "New version: #{new_version}"
+puts "Master version: #{master_version}"
+
+if master_version.include?(new_version)
+  exit 1
+end

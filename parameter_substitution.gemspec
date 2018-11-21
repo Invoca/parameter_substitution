@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'activesupport', '~> 4.0'
   spec.add_development_dependency 'builder'
+  spec.add_development_dependency 'bump',          '~> 0.6.1'
   spec.add_development_dependency 'bundler',       '~> 1.12'
   spec.add_development_dependency 'hobo_support'
   spec.add_development_dependency 'invoca-utils',  '~> 0.0.3'
