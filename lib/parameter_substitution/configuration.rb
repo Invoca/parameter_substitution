@@ -18,7 +18,7 @@ class ParameterSubstitution
         klass.is_a?(Class)
       end
 
-      raise_if_any_bad(bad_formatters, "be of type Class")
+      raise_if_any(bad_formatters, "be of type Class")
     end
 
     def check_for_correct_base_class(custom_formatters)
@@ -26,7 +26,7 @@ class ParameterSubstitution
         klass.ancestors.include?(ParameterSubstitution::Formatters::Base)
       end
 
-      raise_if_any_bad(bad_formatters, "inherit from ParameterSubstitution::Formatters::Base and did not")
+      raise_if_any(bad_formatters, "inherit from ParameterSubstitution::Formatters::Base and did not")
     end
 
     def reject_formatters_by_condition(custom_formatters)
@@ -35,10 +35,10 @@ class ParameterSubstitution
       end
     end
 
-    def raise_if_any_bad(bad_formatters, failure_reason)
-      if bad_formatters.any?
-        log_context = bad_formatters.map { |formatter, klass| [formatter, klass].join(": ") }.join(", ")
-        raise StandardError, "CONFIGURATION ERROR: custom_formatters (#{log_context}) must #{failure_reason}."
+    def raise_if_any(formatters, failure_context)
+      if formatters.any?
+        log_context = formatters.map { |formatter, klass| [formatter, klass].join(": ") }.join(", ")
+        raise StandardError, "CONFIGURATION ERROR: custom_formatters (#{log_context}) must #{failure_context}."
       end
     end
   end
