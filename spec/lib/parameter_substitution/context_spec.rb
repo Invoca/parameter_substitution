@@ -5,14 +5,14 @@ require_relative '../../../lib/parameter_substitution/context'
 describe ParameterSubstitution::Context do
   def build_context(options = {})
     default = {
-      input:                                "<this> and not <that>",
-      mapping:                              { "This" => "that", "That" => "this" },
-      required_parameters:                  [],
-      parameter_start:                      "<",
-      parameter_end:                        ">",
-      destination_encoding:                 :text,
+      input: "<this> and not <that>",
+      mapping: { "This" => "that", "That" => "this" },
+      required_parameters: [],
+      parameter_start: "<",
+      parameter_end: ">",
+      destination_encoding: :text,
       allow_unknown_replacement_parameters: false,
-      allow_nil:                            false
+      allow_nil: false
     }
 
     ParameterSubstitution::Context.new(**default.merge(options))
@@ -21,7 +21,7 @@ describe ParameterSubstitution::Context do
   context "Context" do
     it "be constructable" do
       context = ParameterSubstitution::Context.new(
-        input:   "<this> and not <that>",
+        input: "<this> and not <that>",
         mapping: { "this" => "that", "that" => "this" }
       )
 

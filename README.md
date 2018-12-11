@@ -26,18 +26,17 @@ $ gem install parameter_substitution
 
 
 ## Configuration
-
-`ParameterSubstitution` is configured by supplying a `method_call_base_class`:
+`ParameterSubstitution` is configured by registering a `custom_formatters` hash:
 ```ruby
 ParameterSubstitution.configure do |config|
-  config.method_call_base_class = FormatterBaseClass
+  config.custom_formatters = { 'example_formatter' => 'ExampleFormatter' }
 end
 ```
+These formatters are specified in your app. They must inherit from `ParameterSubstitution::Formatters::Base` and must implement `description` and `format` methods. 
 
-So, in the `"it is a WINDY day"` example at the beginning of this README, the call to `upper` formats the input by calling the `format` method of the designated subclass of the `method_call_base_class`.
-In this case it would be `FormatterBaseClass::Upper`.
+So, in the `"it is a WINDY day"` example at the beginning of this README, the call to `upper` formats the input by calling `Upper.format`.
 ```ruby
-class Upper < FormatterBaseClass
+class Upper < ParameterSubstitution::Formatters::Base
   def self.description
     "Converts to string and returns all characters uppercased, preserves nil"
   end
@@ -47,9 +46,6 @@ class Upper < FormatterBaseClass
   end
 end
 ```
-
-See `spec/spec_helper.rb` and `spec/helpers/` for more examples.
-
 
 ## Usage
 Formats can take arguments and can be chained.  For example, the following formats the time using strftime to find just am or pm, and then compares that to say morning or evening.
@@ -65,8 +61,6 @@ The substitution behavior is very configurable because it is used in many differ
 
 
 ## Design
-
-[Design Drawing](https://docs.google.com/drawings/d/1A1nQVw_oh0dfN52pHNX19NtuEB5RY7RpM6Fv9bToGV4/edit)
 
 ![ParameterSubstitutionDesign](./parameter_subsitution_design.png)
 

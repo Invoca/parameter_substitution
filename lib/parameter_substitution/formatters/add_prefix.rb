@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'test_formatter_base'
-
-class AddPrefix < TestFormatterBase
+class ParameterSubstitution::Formatters::AddPrefix < ParameterSubstitution::Formatters::Base
   def self.description
-    "This takes a prefix as a constructor parameter and prepends it to the row value. If the value is blank, nothing is shown."
+    "This takes a prefix as a constructor parameter and prepends it to the value. If the value is blank, nothing is shown."
   end
 
   def self.has_parameters?

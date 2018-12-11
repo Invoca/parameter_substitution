@@ -36,17 +36,17 @@ describe ParameterSubstitution::MethodCallExpression do
       it "report report when a method with no arguments is called with arguments" do
         expression = parse_method_call('downcase("cheese")')
         expect { expression.validate }.to raise_exception(
-                                            ParameterSubstitution::ParseError,
-                                            "Wrong number of arguments for 'downcase' expected 0, received 1"
-                                          )
+          ParameterSubstitution::ParseError,
+          "Wrong number of arguments for 'downcase' expected 0, received 1"
+        )
       end
 
       it "report report when a method with arguments is called with no arguments" do
         expression = parse_method_call('compare_string')
         expect { expression.validate }.to raise_exception(
-                                            ParameterSubstitution::ParseError,
-                                            "Wrong number of arguments for 'compare_string' expected 3, received 0"
-                                          )
+          ParameterSubstitution::ParseError,
+          "Wrong number of arguments for 'compare_string' expected 3, received 0"
+        )
       end
     end
   end

@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
-require 'json'
-require_relative 'test_formatter_base'
-
-class JsonParse < TestFormatterBase
+class ParameterSubstitution::Formatters::JsonParse < ParameterSubstitution::Formatters::Base
   def self.description
-    "attempts to parse strings as JSON. If valid, passes along the parsed object, if not valid json, or not a string, passes the json encoded value."
+    "Attempts to parse strings as JSON. If valid, passes along the parsed object, if not valid json, or not a string, passes the json encoded value."
   end
 
   def self.has_parameters?

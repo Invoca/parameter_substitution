@@ -41,7 +41,7 @@ class ParameterSubstitution
     end
 
     def format_class
-      @format_class ||= ParameterSubstitution.config.method_call_base_class.find(@name)
+      @format_class ||= ParameterSubstitution::Formatters::Manager.find(@name)
     end
 
     def format_args
