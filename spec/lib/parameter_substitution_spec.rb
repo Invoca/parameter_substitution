@@ -74,6 +74,17 @@ describe ParameterSubstitution do
       assert_parse_result ".bar.", ".<foo.downcase()>."
     end
 
+    it "finds tokens in a string" do
+      result = ParameterSubstitution.find_tokens("<foo><do_a_barrel_roll>")
+      expect(result).to eq(["foo","do_a_barrel_roll"])
+    end
+
+    it "finds formatters in a string" do
+      result = ParameterSubstitution.find_formatters("<foo.do_a_barrel_roll><foo2.downcase>")
+      expect(result).to eq(["do_a_barrel_roll", "downcase"])
+    end
+
+
     it "work with escaped parameter names" do
       @mapping['has nonsense . <>'] = 'Worked!'
       # Escaping slashes gets hard to read, so being verbose in favor of clarity.

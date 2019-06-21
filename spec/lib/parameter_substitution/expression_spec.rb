@@ -40,7 +40,7 @@ describe ParameterSubstitution::Expression do
       end
     end
 
-    context "evaluate" do
+    context "#evaluate" do
       it "handle direct substitution" do
         expect(".red.").to eq(parse_expression(".<color>.").evaluate)
       end
@@ -55,6 +55,20 @@ describe ParameterSubstitution::Expression do
 
       it "convert raw output if there is more than one parameter" do
         expect("red1").to eq(parse_expression("<color><integer>", destination_encoding: :raw).evaluate)
+      end
+    end
+
+    context "#substitution_parameter_names" do
+      it "return expression list parameter names" do
+        expression = parse_expression("<simple_text>")
+        expect(expression.substitution_parameter_names).to eq(["simple_text"])
+      end
+    end
+
+    context "#method_names" do
+      it "return expression list method names" do
+        expression = parse_expression("<simple_text.do_a_barrel_roll>")
+        expect(expression.method_names).to eq(["do_a_barrel_roll"])
       end
     end
   end

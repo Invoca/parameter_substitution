@@ -37,6 +37,14 @@ class ParameterSubstitution
       @expression_list.map_compact(&:parameter_name)
     end
 
+    def method_names
+      @expression_list.map_compact do |expression|
+        expression.method_calls.map_compact do |method_call|
+          method_call.name
+        end
+      end.flatten
+    end
+
     private
 
     def validate_required_parameters

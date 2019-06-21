@@ -69,6 +69,12 @@ class ParameterSubstitution
       parse_expression(context).substitution_parameter_names
     end
 
+    def find_formatters(input)
+      context = ParameterSubstitution::Context.new(input: input, mapping: [])
+      parse_expression(context).method_names
+    end
+
+
     private
 
     def parse_expression(context)
