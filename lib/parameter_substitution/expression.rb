@@ -40,7 +40,7 @@ class ParameterSubstitution
     def method_names
       @expression_list.map_compact do |expression|
         expression.try(:method_calls)&.map_compact do |method_call|
-          method_call.name
+          method_call.name.to_s
         end
       end.flatten
     end
