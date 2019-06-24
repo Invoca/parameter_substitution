@@ -74,7 +74,6 @@ class ParameterSubstitution
       parse_expression(context).method_names
     end
 
-
     private
 
     def parse_expression(context)

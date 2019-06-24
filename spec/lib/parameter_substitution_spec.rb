@@ -84,7 +84,6 @@ describe ParameterSubstitution do
       expect(result).to eq(["do_a_barrel_roll", "downcase"])
     end
 
-
     it "work with escaped parameter names" do
       @mapping['has nonsense . <>'] = 'Worked!'
       # Escaping slashes gets hard to read, so being verbose in favor of clarity.
