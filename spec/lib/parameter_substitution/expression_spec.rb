@@ -60,15 +60,15 @@ describe ParameterSubstitution::Expression do
 
     context "#substitution_parameter_names" do
       it "return expression list parameter names" do
-        expression = parse_expression("<simple_text>")
-        expect(expression.substitution_parameter_names).to eq(["simple_text"])
+        expression = parse_expression("<simple_text><param_two>")
+        expect(expression.substitution_parameter_names).to eq(["simple_text", "param_two"])
       end
     end
 
     context "#method_names" do
       it "return expression list method names" do
-        expression = parse_expression("<simple_text.do_a_barrel_roll>")
-        expect(expression.method_names).to eq(["do_a_barrel_roll"])
+        expression = parse_expression("<simple_text.do_a_barrel_roll><foo.bar>")
+        expect(expression.method_names).to eq(["do_a_barrel_roll", "bar"])
       end
     end
   end
