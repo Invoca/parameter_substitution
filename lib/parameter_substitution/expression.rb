@@ -38,16 +38,18 @@ class ParameterSubstitution
     end
 
     def method_names
-      @expression_list.map_compact do |expression|
-        name_from_method_calls(expression)
-      end.flatten
+      @expression_list.reduce([]) do |all_method_names, expression|
+        all_method_names + name_from_method_calls(expression)
+      end
     end
 
     def name_from_method_calls(expression)
       if (method_calls = expression.try(:method_calls))
-        method_calls.map_compact do |method_call|
-          method_call.name.to_s
+        method_calls.reduce([]) do |all_method_call_names, method_call|
+          all_method_call_names + [method_call.name.to_s] + method_call.arguments&.flat_map { |arg| arg.try(:method_names) }
         end
+      else
+        []
       end
     end
 

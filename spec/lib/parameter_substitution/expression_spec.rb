@@ -9,7 +9,9 @@ describe ParameterSubstitution::Expression do
       mapping: {
         "color" => "red",
         "size" => nil,
-        "integer" => 1
+        "integer" => 1,
+        "simple_text" => "hello",
+        "another_simple_text" => "world"
       },
       destination_encoding: :cgi
     }.merge(options)
@@ -69,6 +71,16 @@ describe ParameterSubstitution::Expression do
       it "return expression list method names" do
         expression = parse_expression("<simple_text.do_a_barrel_roll><foo.bar>")
         expect(expression.method_names).to eq(["do_a_barrel_roll", "bar"])
+      end
+
+      it "return expression list of chained method names" do
+        expression = parse_expression("<simple_text.do_a_barrel_roll.again>")
+        expect(expression.method_names).to eq(["do_a_barrel_roll", "again"])
+      end
+
+      it "return expression list of nested method names" do
+        expression = parse_expression("<simple_text.if_nil(<another_simple_text.blank_if_nil>)>")
+        expect(expression.method_names).to eq(["if_nil", "blank_if_nil"])
       end
     end
   end
