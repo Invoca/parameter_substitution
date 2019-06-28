@@ -39,11 +39,11 @@ class ParameterSubstitution
 
     def method_names
       @expression_list.reduce([]) do |all_method_names, expression|
-        all_method_names + name_from_method_calls(expression)
+        all_method_names + methods_used_by_expression(expression)
       end
     end
 
-    def name_from_method_calls(expression)
+    def methods_used_by_expression(expression)
       if (method_calls = expression.try(:method_calls))
         method_calls.reduce([]) do |all_method_call_names, method_call|
           all_method_call_names + [method_call.name.to_s] + method_call.arguments&.flat_map { |arg| arg.try(:method_names) }
