@@ -46,7 +46,7 @@ class ParameterSubstitution
     def methods_used_by_expression(expression)
       if (method_calls = expression.try(:method_calls))
         method_calls.reduce([]) do |all_method_call_names, method_call|
-          all_method_call_names + [method_call.name.to_s] + method_call.arguments&.flat_map { |arg| arg.try(:method_names) }
+          all_method_call_names + [method_call.name.to_s] + method_call.arguments&.flat_map { |arg| arg.try(:method_names) }.compact # arg.try returns 'nil' when no methods are called; only method names needed
         end
       else
         []

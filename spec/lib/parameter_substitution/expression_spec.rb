@@ -82,6 +82,11 @@ describe ParameterSubstitution::Expression do
         expression = parse_expression("<simple_text.if_nil(<another_simple_text.blank_if_nil>)>")
         expect(expression.method_names).to eq(["if_nil", "blank_if_nil"])
       end
+
+      it "return only method names for methods with arguments" do
+        expression = parse_expression("<parameter.method('arg1', 'arg2', 'arg3')>")
+        expect(expression.method_names).to eq(["method"])
+      end
     end
   end
 end
