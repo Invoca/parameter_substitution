@@ -19,7 +19,7 @@ class ParameterSubstitution
 
     def evaluate
       if context.destination_encoding == :raw && @expression_list.size == 1
-        # When using the destination encodning of raw, the output should preserve the type from the mapping if the substitution
+        # When using the destination encoding of raw, the output should preserve the type from the mapping if the substitution
         # is the full expression.  So the input of '<id>' with the mapping { 'id' => 1 } should return 1 and not "1".
         @expression_list.first.evaluate(:OutsideString, only_expression: true)
       else
@@ -35,6 +35,22 @@ class ParameterSubstitution
 
     def substitution_parameter_names
       @expression_list.map_compact(&:parameter_name)
+    end
+
+    def method_names
+      @expression_list.reduce([]) do |all_method_names, expression|
+        all_method_names + methods_used_by_expression(expression)
+      end
+    end
+
+    def methods_used_by_expression(expression)
+      if (method_calls = expression.try(:method_calls))
+        method_calls.reduce([]) do |all_method_call_names, method_call|
+          all_method_call_names + [method_call.name.to_s] + method_call.arguments&.flat_map { |arg| arg.try(:method_names) }.compact # arg.try returns 'nil' when no methods are called; only method names needed
+        end
+      else
+        []
+      end
     end
 
     private
