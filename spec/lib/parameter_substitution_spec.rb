@@ -74,7 +74,7 @@ describe ParameterSubstitution do
       let(:mapping) { { 'call.start_time' => 'hello' } }
 
       context "#find_tokens" do
-        it "returns tokens up to first dot when now mapping is provided" do
+        it "returns tokens up to first dot when no mapping is provided" do
           expect(ParameterSubstitution.find_tokens(expression)).to eq(['call', 'do_a_barrel_roll'])
         end
 
