@@ -64,18 +64,18 @@ class ParameterSubstitution
       ParameterSubstitution.config = config
     end
 
-    def find_tokens(string_with_tokens)
-      parse_expression(context_from_string(string_with_tokens)).substitution_parameter_names
+    def find_tokens(string_with_tokens, mapping: {})
+      parse_expression(context_from_string(string_with_tokens, mapping)).substitution_parameter_names
     end
 
-    def find_formatters(string_with_tokens)
-      parse_expression(context_from_string(string_with_tokens)).method_names
+    def find_formatters(string_with_tokens, mapping: {})
+      parse_expression(context_from_string(string_with_tokens, mapping)).method_names
     end
 
     private
 
-    def context_from_string(string_with_tokens)
-      ParameterSubstitution::Context.new(input: string_with_tokens, mapping: [])
+    def context_from_string(string_with_tokens, mapping)
+      ParameterSubstitution::Context.new(input: string_with_tokens, mapping: mapping)
     end
 
     def parse_expression(context)
