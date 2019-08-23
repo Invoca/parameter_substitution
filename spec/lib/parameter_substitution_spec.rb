@@ -69,19 +69,34 @@ describe ParameterSubstitution do
       }
     end
 
+    context "parsing helpers" do
+      let(:expression) { "<call.start_time.blank_if_nil><do_a_barrel_roll.downcase>" }
+      let(:mapping) { { 'call.start_time' => 'hello' } }
+
+      context "#find_tokens" do
+        it "returns tokens up to first dot when now mapping is provided" do
+          expect(ParameterSubstitution.find_tokens(expression)).to eq(['call', 'do_a_barrel_roll'])
+        end
+
+        it "returns tokens that exist in mapping when one is provided" do
+          expect(ParameterSubstitution.find_tokens(expression, mapping: mapping)).to eq(['call.start_time', 'do_a_barrel_roll'])
+        end
+      end
+
+      context '#find_formatters' do
+        it "returns all formatters after first dot when no mapping is provided" do
+          expect(ParameterSubstitution.find_formatters(expression)).to eq(['start_time', 'blank_if_nil', 'downcase'])
+        end
+
+        it "returns formatters after all tokens when mapping is provided" do
+          expect(ParameterSubstitution.find_formatters(expression, mapping: mapping)).to eq(['blank_if_nil', 'downcase'])
+        end
+      end
+    end
+
     it "handle simple go right cases" do
       assert_parse_result ".bar.", ".<foo.downcase>."
       assert_parse_result ".bar.", ".<foo.downcase()>."
-    end
-
-    it "finds tokens in a string" do
-      result = ParameterSubstitution.find_tokens("<foo><do_a_barrel_roll>")
-      expect(result).to eq(["foo","do_a_barrel_roll"])
-    end
-
-    it "finds formatters in a string" do
-      result = ParameterSubstitution.find_formatters("<foo.do_a_barrel_roll><foo2.downcase>")
-      expect(result).to eq(["do_a_barrel_roll", "downcase"])
     end
 
     it "work with escaped parameter names" do
