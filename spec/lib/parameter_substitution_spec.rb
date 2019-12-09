@@ -92,6 +92,41 @@ describe ParameterSubstitution do
           expect(ParameterSubstitution.find_formatters(expression, mapping: mapping)).to eq(['blank_if_nil', 'downcase'])
         end
       end
+
+      context '#find_warnings' do
+        let(:expression_with_valid_params) { "<foo>" }
+        let(:expression_with_bad_paramss) { "<bobby><bobby2>" }
+        let(:expression_with_bad_methods) { "<foo.test1.test2><foo.test3.test4><black.test1.test2>" }
+        let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
+
+        context "when parameters are valid" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_valid_params, mapping: default_mapping))
+              .to eq(nil)
+          end
+        end
+
+        context "when there are invalid parameters" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_paramss)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
+          end
+        end
+
+        context "when there are invalid methods" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_methods, mapping: default_mapping))
+              .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used for on parameter 'foo'",
+                      "Unknown methods 'test1', 'test2' used for on parameter 'black'"])
+          end
+        end
+
+        context "when there are invalid parameters and methods" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_params_and_methods))
+              .to eq(["Unknown param 'bobby' and methods 'test1', 'test2'", "Unknown param 'bobby2' and methods 'test3', 'test4'"])
+          end
+        end
+      end
     end
 
     it "handle simple go right cases" do

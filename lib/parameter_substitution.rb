@@ -50,6 +50,7 @@ class ParameterSubstitution
       )
 
       expression = parse_expression(context)
+
       expression.validate
       [expression.evaluate, expression.warnings]
     rescue ParameterSubstitution::ParseError => ex
@@ -70,6 +71,10 @@ class ParameterSubstitution
 
     def find_formatters(string_with_tokens, mapping: {})
       parse_expression(context_from_string(string_with_tokens, mapping)).method_names
+    end
+
+    def find_warnings(string_with_tokens, mapping: {})
+      parse_expression(context_from_string(string_with_tokens, mapping)).warnings
     end
 
     private

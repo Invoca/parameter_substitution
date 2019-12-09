@@ -30,7 +30,8 @@ class ParameterSubstitution
     end
 
     def warnings
-      unknown_parameters_message
+      unknown_messages = unknown_parameter_messages + unknown_method_messages
+      unknown_messages.empty? ? nil : unknown_messages
     end
 
     def substitution_parameter_names
@@ -77,6 +78,28 @@ class ParameterSubstitution
       end
     end
 
+    def unknown_method_messages
+      unknown_parameter_methods.map_compact do |param, methods|
+        method_string = "method#{methods.size > 1 ? 's' : ''}"
+        if !(methods.empty? || unknown_parameters.include?(param))
+          "Unknown #{method_string} #{@context.formatted_arg_list(methods)} used for on parameter '#{param}'"
+        end
+      end
+    end
+
+    def unknown_parameter_messages
+      unknown_parameters.map do |param|
+        unknown_methods_for_param = unknown_parameter_methods[param]
+        method_string = "method#{unknown_methods_for_param.size > 1 ? 's' : ''}"
+        unknown_method_message = if unknown_methods_for_param.empty?
+                                   ''
+                                 else
+                                   " and #{method_string} #{@context.formatted_arg_list(unknown_methods_for_param)}"
+                                 end
+        "Unknown param '#{param}'#{unknown_method_message}"
+      end
+    end
+
     def unknown_parameters_message
       unless unknown_parameters.empty?
         "Unknown replacement parameter#{unknown_parameters.size > 1 ? 's' : ''} #{@context.formatted_arg_list(unknown_parameters)}"
@@ -97,6 +120,15 @@ class ParameterSubstitution
         map_expressions_with_quote_tracking do |expression, inside_quotes|
           expression.unknown_parameters(inside_quotes)
         end.compact
+    end
+
+    def unknown_parameter_methods
+      @expression_list.select(&:parameter_name).reduce({}) do |hash, expression|
+        hash[expression.parameter_name] ||= []
+        hash[expression.parameter_name]
+          .push(*(methods_used_by_expression(expression) - ParameterSubstitution::Formatters::Manager.all_formats.map { |k, _v| k.to_s }))
+        hash
+      end
     end
   end
 end
