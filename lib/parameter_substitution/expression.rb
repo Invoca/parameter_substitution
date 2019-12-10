@@ -6,6 +6,9 @@ class ParameterSubstitution
   class Expression
     attr_reader :expression_list, :context
 
+    UNKNOWN_PARAM_WARNING_TYPE  = :unknown_param_warning_type
+    UNKNOWN_METHOD_WARNING_TYPE = :unknown_method_warning_type
+
     def initialize(expression_list, context)
       @expression_list = expression_list
       @context = context
@@ -29,9 +32,15 @@ class ParameterSubstitution
       end
     end
 
-    def warnings
-      unknown_messages = unknown_parameter_messages + unknown_method_messages
-      unknown_messages.empty? ? nil : unknown_messages
+    def warnings(warning_type = nil)
+      if warning_type.nil?
+        unknown_messages = unknown_parameter_messages + unknown_method_messages
+        unknown_messages.empty? ? nil : unknown_messages
+      elsif warning_type == UNKNOWN_PARAM_WARNING_TYPE
+        unknown_parameter_messages
+      elsif warning_type == UNKNOWN_METHOD_WARNING_TYPE
+        unknown_method_messages
+      end
     end
 
     def substitution_parameter_names

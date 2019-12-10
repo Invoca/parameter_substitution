@@ -25,6 +25,9 @@ class ParameterSubstitution
 
   cattr_accessor :config
 
+  UNKNOWN_PARAM_WARNING_TYPE  = :unknown_param_warning_type
+  UNKNOWN_METHOD_WARNING_TYPE = :unknown_method_warning_type
+
   class << self
     def evaluate(
       input:,
@@ -73,8 +76,8 @@ class ParameterSubstitution
       parse_expression(context_from_string(string_with_tokens, mapping)).method_names
     end
 
-    def find_warnings(string_with_tokens, mapping: {})
-      parse_expression(context_from_string(string_with_tokens, mapping)).warnings
+    def find_warnings(string_with_tokens, mapping: {}, warning_type: nil)
+      parse_expression(context_from_string(string_with_tokens, mapping)).warnings(warning_type)
     end
 
     private

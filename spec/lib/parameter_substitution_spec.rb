@@ -98,11 +98,28 @@ describe ParameterSubstitution do
         let(:expression_with_bad_paramss) { "<bobby><bobby2>" }
         let(:expression_with_bad_methods) { "<foo.test1.test2><foo.test3.test4><black.test1.test2>" }
         let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
+        let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><foo.test3.test4>" }
 
         context "when parameters are valid" do
           it "returns 2 warnings" do
             expect(ParameterSubstitution.find_warnings(expression_with_valid_params, mapping: default_mapping))
               .to eq(nil)
+          end
+        end
+
+        context "when warning_type is :unknown_param_warning_type" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_mixed_bad_params_and_methods,
+                                                       mapping: default_mapping, warning_type: :unknown_param_warning_type))
+              .to eq(["Unknown param 'bobby' and methods 'test1', 'test2'"])
+          end
+        end
+
+        context "when warning_type is :unknown_method_warning_type" do
+          it "returns 2 warnings" do
+            expect(ParameterSubstitution.find_warnings(expression_with_mixed_bad_params_and_methods,
+                                                       mapping: default_mapping, warning_type: :unknown_method_warning_type))
+              .to eq(["Unknown methods 'test3', 'test4' used for on parameter 'foo'"])
           end
         end
 
