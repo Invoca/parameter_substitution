@@ -138,10 +138,13 @@ class ParameterSubstitution
     def unknown_parameter_methods
       @expression_list.select(&:parameter_name).reduce({}) do |hash, expression|
         hash[expression.parameter_name] ||= []
-        hash[expression.parameter_name]
-          .push(*(methods_used_by_expression(expression) - ParameterSubstitution::Formatters::Manager.all_formats.map { |k, _v| k.to_s }))
+        hash[expression.parameter_name].push(*missing_methods(expression))
         hash
       end
+    end
+
+    def missing_methods(expression)
+      (methods_used_by_expression(expression) - ParameterSubstitution::Formatters::Manager.all_formats.map { |k, _v| k.to_s })
     end
   end
 end
