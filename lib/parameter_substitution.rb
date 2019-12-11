@@ -25,9 +25,6 @@ class ParameterSubstitution
 
   cattr_accessor :config
 
-  UNKNOWN_PARAM_WARNING_TYPE  = :unknown_param_warning_type
-  UNKNOWN_METHOD_WARNING_TYPE = :unknown_method_warning_type
-
   class << self
     def evaluate(
       input:,
