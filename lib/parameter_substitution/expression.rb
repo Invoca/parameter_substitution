@@ -95,7 +95,7 @@ class ParameterSubstitution
     def unknown_method_messages
       unknown_parameter_methods.map_compact do |param, methods|
         method_string = pluralize_text("method", methods.size)
-        if !(methods.empty? || unknown_parameters.include?(param))
+        unless methods.empty? || unknown_parameters.include?(param)
           "Unknown #{method_string} #{@context.formatted_arg_list(methods)} used on parameter '#{param}'"
         end
       end
