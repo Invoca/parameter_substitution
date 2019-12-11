@@ -36,7 +36,7 @@ class ParameterSubstitution
       unknown_parameters_message
     end
 
-    def paramter_and_method_warnings(warning_type = nil)
+    def parameter_and_method_warnings(warning_type = nil)
       if warning_type.nil?
         unknown_messages = unknown_parameter_messages + unknown_method_messages
         unknown_messages.empty? ? nil : unknown_messages.uniq

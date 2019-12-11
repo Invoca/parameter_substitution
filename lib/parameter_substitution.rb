@@ -51,9 +51,9 @@ class ParameterSubstitution
 
       expression = parse_expression(context)
       expression.validate
-      [expression.evaluate, expression.warnings, expression.paramter_and_method_warnings]
+      [expression.evaluate, expression.warnings, expression.parameter_and_method_warnings]
     rescue ParameterSubstitution::ParseError => ex
-      [context.input, ex.message, expression&.paramter_and_method_warnings]
+      [context.input, ex.message, expression&.parameter_and_method_warnings]
     rescue => ex
       raise SubstitutionError, "Error occurred while parameter substitution: #{ex.message}"
     end
@@ -73,7 +73,7 @@ class ParameterSubstitution
     end
 
     def find_warnings(string_with_tokens, mapping: {}, warning_type: nil)
-      parse_expression(context_from_string(string_with_tokens, mapping)).paramter_and_method_warnings(warning_type) || []
+      parse_expression(context_from_string(string_with_tokens, mapping)).parameter_and_method_warnings(warning_type) || []
     end
 
     private
