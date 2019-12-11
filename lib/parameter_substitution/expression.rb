@@ -73,7 +73,8 @@ class ParameterSubstitution
       matched_parameters = substitution_parameter_names.uniq
       required_parameters = @context.required_parameters
       if !required_parameters.empty? && (missing_fields = required_parameters.reject { |rt| rt.in?(matched_parameters) }).any?
-        raise ParameterSubstitution::ParseError, "The following field#{missing_fields.size > 1 ? 's' : ''} must be included: #{@context.formatted_arg_list(missing_fields)}"
+        raise ParameterSubstitution::ParseError,
+              "The following #{pluralize_text("field", missing_fields.size)} must be included: #{@context.formatted_arg_list(missing_fields)}"
       end
     end
 
@@ -93,7 +94,7 @@ class ParameterSubstitution
 
     def unknown_method_messages
       unknown_parameter_methods.map_compact do |param, methods|
-        method_string = "method#{methods.size > 1 ? 's' : ''}"
+        method_string = pluralize_text("method", methods.size)
         if !(methods.empty? || unknown_parameters.include?(param))
           "Unknown #{method_string} #{@context.formatted_arg_list(methods)} used on parameter '#{param}'"
         end
@@ -103,7 +104,7 @@ class ParameterSubstitution
     def unknown_parameter_messages
       unknown_parameters.map do |param|
         unknown_methods_for_param = unknown_parameter_methods[param]
-        method_string = "method#{unknown_methods_for_param.size > 1 ? 's' : ''}"
+        method_string = pluralize_text("method", unknown_methods_for_param.size)
         unknown_method_message = if unknown_methods_for_param.empty?
                                    ''
                                  else
@@ -115,7 +116,7 @@ class ParameterSubstitution
 
     def unknown_parameters_message
       unless unknown_parameters.empty?
-        "Unknown replacement parameter#{unknown_parameters.size > 1 ? 's' : ''} #{@context.formatted_arg_list(unknown_parameters)}"
+        "Unknown replacement #{pluralize_text("parameter", unknown_parameters.size)} #{@context.formatted_arg_list(unknown_parameters)}"
       end
     end
 
@@ -145,6 +146,10 @@ class ParameterSubstitution
 
     def missing_methods(expression)
       (methods_used_by_expression(expression) - ParameterSubstitution::Formatters::Manager.all_formats.map { |k, _v| k.to_s })
+    end
+
+    def pluralize_text(text, amount)
+      text + (amount > 1 ? 's' : '')
     end
   end
 end
