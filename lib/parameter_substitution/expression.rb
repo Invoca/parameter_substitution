@@ -95,7 +95,7 @@ class ParameterSubstitution
       unknown_parameter_methods.map_compact do |param, methods|
         method_string = "method#{methods.size > 1 ? 's' : ''}"
         if !(methods.empty? || unknown_parameters.include?(param))
-          "Unknown #{method_string} #{@context.formatted_arg_list(methods)} used for on parameter '#{param}'"
+          "Unknown #{method_string} #{@context.formatted_arg_list(methods)} used on parameter '#{param}'"
         end
       end
     end

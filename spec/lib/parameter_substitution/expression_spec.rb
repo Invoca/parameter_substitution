@@ -113,7 +113,7 @@ describe ParameterSubstitution::Expression do
       context "when warning_type is :unknown_method_warning_type" do
         it "returns 2 warnings" do
           expect(parse_expression(expression_with_mixed_bad_params_and_methods).parameter_and_method_warnings(:unknown_method_warning_type))
-            .to eq(["Unknown methods 'test3', 'test4' used for on parameter 'color'"])
+            .to eq(["Unknown methods 'test3', 'test4' used on parameter 'color'"])
         end
       end
 
@@ -126,8 +126,8 @@ describe ParameterSubstitution::Expression do
       context "when there are invalid methods" do
         it "returns 2 warnings" do
           expect(parse_expression(expression_with_bad_methods).parameter_and_method_warnings)
-            .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used for on parameter 'color'",
-                    "Unknown methods 'test1', 'test2' used for on parameter 'size'"])
+            .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used on parameter 'color'",
+                    "Unknown methods 'test1', 'test2' used on parameter 'size'"])
         end
       end
 
