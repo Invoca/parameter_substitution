@@ -97,7 +97,7 @@ describe ParameterSubstitution::Expression do
       let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><color.test3.test4>" }
 
       context "when parameters are valid" do
-        it "returns empty array" do
+        it "returns nil" do
           expect(parse_expression(expression_with_valid_params).parameter_and_method_warnings)
             .to eq(nil)
         end
@@ -111,7 +111,7 @@ describe ParameterSubstitution::Expression do
       end
 
       context "when warning_type is :unknown_method_warning_type" do
-        it "returns 2 warnings" do
+        it "returns 1 warnings" do
           expect(parse_expression(expression_with_mixed_bad_params_and_methods).parameter_and_method_warnings(:unknown_method_warning_type))
             .to eq(["Unknown methods 'test3', 'test4' used on parameter 'color'"])
         end
