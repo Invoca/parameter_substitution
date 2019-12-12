@@ -6,9 +6,6 @@ class ParameterSubstitution
   class Expression
     attr_reader :expression_list, :context
 
-    UNKNOWN_PARAM_WARNING_TYPE  = :unknown_param_warning_type
-    UNKNOWN_METHOD_WARNING_TYPE = :unknown_method_warning_type
-
     def initialize(expression_list, context)
       @expression_list = expression_list
       @context = context
