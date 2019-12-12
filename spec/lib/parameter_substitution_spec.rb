@@ -107,22 +107,6 @@ describe ParameterSubstitution do
           end
         end
 
-        context "when warning_type is :unknown_param_warning_type" do
-          it "returns 1 warnings" do
-            expect(ParameterSubstitution.find_warnings(expression_with_mixed_bad_params_and_methods,
-                                                       mapping: default_mapping, warning_type: :unknown_param_warning_type))
-              .to eq(["Unknown param 'bobby' and methods 'test1', 'test2'"])
-          end
-        end
-
-        context "when warning_type is :unknown_method_warning_type" do
-          it "returns 1 warning" do
-            expect(ParameterSubstitution.find_warnings(expression_with_mixed_bad_params_and_methods,
-                                                       mapping: default_mapping, warning_type: :unknown_method_warning_type))
-              .to eq(["Unknown methods 'test3', 'test4' used on parameter 'foo'"])
-          end
-        end
-
         context "when there are invalid parameters" do
           it "returns 2 warnings" do
             expect(ParameterSubstitution.find_warnings(expression_with_bad_paramss)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])

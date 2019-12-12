@@ -72,8 +72,8 @@ class ParameterSubstitution
       parse_expression(context_from_string(string_with_tokens, mapping)).method_names
     end
 
-    def find_warnings(string_with_tokens, mapping: {}, warning_type: nil)
-      parse_expression(context_from_string(string_with_tokens, mapping)).parameter_and_method_warnings(warning_type) || []
+    def find_warnings(string_with_tokens, mapping: {})
+      parse_expression(context_from_string(string_with_tokens, mapping)).parameter_and_method_warnings || []
     end
 
     private
