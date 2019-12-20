@@ -88,5 +88,41 @@ describe ParameterSubstitution::Expression do
         expect(expression.method_names).to eq(["method"])
       end
     end
+
+    context '#parameter_and_method_warnings' do
+      let(:expression_with_valid_params) { "<color>" }
+      let(:expression_with_bad_paramss) { "<bobby><bobby2>" }
+      let(:expression_with_bad_methods) { "<color.test1.test2><color.test3.test4><size.test1.test2>" }
+      let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
+      let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><color.test3.test4>" }
+
+      context "when parameters are valid" do
+        it "returns nil" do
+          expect(parse_expression(expression_with_valid_params).parameter_and_method_warnings)
+            .to eq(nil)
+        end
+      end
+
+      context "when there are invalid parameters" do
+        it "returns 2 warnings" do
+          expect(parse_expression(expression_with_bad_paramss).parameter_and_method_warnings).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
+        end
+      end
+
+      context "when there are invalid methods" do
+        it "returns 2 warnings" do
+          expect(parse_expression(expression_with_bad_methods).parameter_and_method_warnings)
+            .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used on parameter 'color'",
+                    "Unknown methods 'test1', 'test2' used on parameter 'size'"])
+        end
+      end
+
+      context "when there are invalid parameters and methods" do
+        it "returns 2 warnings" do
+          expect(parse_expression(expression_with_bad_params_and_methods).parameter_and_method_warnings)
+            .to eq(["Unknown param 'bobby' and methods 'test1', 'test2'", "Unknown param 'bobby2' and methods 'test3', 'test4'"])
+        end
+      end
+    end
   end
 end
