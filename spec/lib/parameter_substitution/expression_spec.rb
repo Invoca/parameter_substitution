@@ -58,6 +58,10 @@ describe ParameterSubstitution::Expression do
       it "convert raw output if there is more than one parameter" do
         expect("red1").to eq(parse_expression("<color><integer>", destination_encoding: :raw).evaluate)
       end
+
+      it "handles nested methods" do
+        expect("correct").to eq(parse_expression("<integer.if_truthy(<size.if_truthy('incorrect1','correct')>,'incorrect2')>").evaluate)
+      end
     end
 
     context "#substitution_parameter_names" do
