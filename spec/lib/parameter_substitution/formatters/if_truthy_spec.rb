@@ -13,41 +13,25 @@ describe ParameterSubstitution::Formatters::IfTruthy do
     end
 
     it "provide a description" do
-      expect(@format_class.description).to eq("The input is truthy (i.e. true, 1, y, YES) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument.")
+      expect(@format_class.description).to eq("The input is truthy (i.e. true, t, 1) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument.")
     end
 
     it "report that it has parameters" do
       expect(@format_class.has_parameters?).to eq(true)
     end
 
-    it "return true string when value is truthy" do
-      instance = @format_class.new("correct", "incorrect")
-      expect(instance.format(true)).to eq("correct")
-      expect(instance.format("true")).to eq("correct")
-      expect(instance.format("TRUE")).to eq("correct")
-      expect(instance.format(1)).to eq("correct")
-      expect(instance.format("1")).to eq("correct")
-      expect(instance.format("Y")).to eq("correct")
-      expect(instance.format("YES")).to eq("correct")
-      expect(instance.format("y")).to eq("correct")
-      expect(instance.format("yes")).to eq("correct")
+    [true,"true","t","TRUE","T",1,"1"].each do |value|
+      it "return true string when value is #{value.inspect}" do
+        instance = @format_class.new("correct", "incorrect")
+        expect(instance.format(value)).to eq("correct")
+      end
     end
 
-    it "return false string when value is not truthy" do
-      instance = @format_class.new("incorrect", "correct")
-      expect(instance.format(false)).to eq("correct")
-      expect(instance.format("false")).to eq("correct")
-      expect(instance.format("FALSE")).to eq("correct")
-      expect(instance.format(0)).to eq("correct")
-      expect(instance.format("0")).to eq("correct")
-      expect(instance.format("N")).to eq("correct")
-      expect(instance.format("NO")).to eq("correct")
-      expect(instance.format("n")).to eq("correct")
-      expect(instance.format("no")).to eq("correct")
-      expect(instance.format(nil)).to eq("correct")
-      expect(instance.format("")).to eq("correct")
-      expect(instance.format(1234)).to eq("correct")
-      expect(instance.format("random string")).to eq("correct")
+    [false,"false","f","FALSE","F",0,"0",nil,"",1234,"random string"].each do |value|
+      it "return false string when value is #{value.inspect}" do
+        instance = @format_class.new("incorrect", "correct")
+        expect(instance.format(value)).to eq("correct")
+      end
     end
   end
 end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+require 'active_record'
 
 class ParameterSubstitution::Formatters::IfTruthy < ParameterSubstitution::Formatters::Base
   def self.description
-    "The input is truthy (i.e. true, 1, y, YES) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument."
+    "The input is truthy (i.e. true, t, 1) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument."
   end
 
   def self.has_parameters?
@@ -15,20 +16,10 @@ class ParameterSubstitution::Formatters::IfTruthy < ParameterSubstitution::Forma
   end
 
   def format(value)
-    if [true, "true", 1, "1", "y", "yes"].include?(downcase_if_string(value))
+    if ActiveRecord::Type::Boolean.new.type_cast_from_database(value)
       @value_if_true
     else
       @value_if_false
-    end
-  end
-
-  :private
-
-  def downcase_if_string(value)
-    if value.is_a?(String)
-      value.downcase
-    else
-      value
     end
   end
 end
