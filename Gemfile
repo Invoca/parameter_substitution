@@ -13,10 +13,11 @@ end
 group :development do
   gem 'activesupport', '~> 4.0'
   gem 'builder'
+  gem 'bump',          '~> 0.6'
   gem 'bundler',       '~> 1.12'
   gem 'guard-rspec'
   gem 'hobo_support'
-  gem 'invoca-utils',  '~> 0.0.3'
+  gem 'invoca-utils',  '~> 0.0'
   gem 'parslet',       '~> 1.8'
   gem 'pry-byebug'
   gem 'rake',          '~> 10.0'
