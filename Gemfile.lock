@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    parameter_substitution (0.2.3)
+    parameter_substitution (0.3.0.pre.1)
 
 GEM
   remote: https://rubygems.org/
@@ -176,7 +176,7 @@ DEPENDENCIES
   bundler (~> 1.12)
   guard-rspec
   hobo_support
-  invoca-utils (~> 0.0)
+  invoca-utils (~> 0.1)
   parameter_substitution!
   parslet (~> 1.8)
   pry-byebug

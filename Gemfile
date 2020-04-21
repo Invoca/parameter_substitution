@@ -17,7 +17,7 @@ group :development do
   gem 'bundler',       '~> 1.12'
   gem 'guard-rspec'
   gem 'hobo_support'
-  gem 'invoca-utils',  '~> 0.0'
+  gem 'invoca-utils',  '~> 0.1'
   gem 'parslet',       '~> 1.8'
   gem 'pry-byebug'
   gem 'rake',          '~> 10.0'
