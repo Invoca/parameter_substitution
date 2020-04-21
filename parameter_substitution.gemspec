@@ -14,6 +14,10 @@ Gem::Specification.new do |spec|
   spec.homepage    = 'https://github.com/Invoca/parameter_substitution'
   spec.files       = ['lib/parameter_substitution.rb']
 
+  spec.metadata = {
+    'allowed_push_host' => 'https://gem.fury.io/invoca'
+  }
+
   spec.add_development_dependency 'activesupport', '~> 4.0'
   spec.add_development_dependency 'builder'
   spec.add_development_dependency 'bump',          '~> 0.6.1'
