@@ -16,6 +16,6 @@ Gem::Specification.new do |spec|
   spec.files       = ['lib/parameter_substitution.rb']
 
   spec.metadata = {
-    'allowed_push_host' => 'https://gem.fury.io/invoca'
+    'allowed_push_host' => 'https://rubygems.org'
   }
 end
