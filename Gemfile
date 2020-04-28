@@ -20,6 +20,6 @@ group :development do
   gem 'invoca-utils',  '~> 0.1'
   gem 'parslet',       '~> 1.8'
   gem 'pry-byebug'
-  gem 'rake',          '~> 10.0'
-  gem 'rspec',         '~> 3.0'
+  gem 'rake'
+  gem 'rspec'
 end
