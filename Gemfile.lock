@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    parameter_substitution (0.3.0.pre.1)
+    parameter_substitution (0.3.0.pre.2)
 
 GEM
   remote: https://rubygems.org/
@@ -186,4 +186,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   2.1.4
+   1.17.3
