@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary     = 'Handles parsing an input strings with embedded substitution parameters and replacing them with values from a provided mapping.'
   spec.description = 'The substitution can be formatted using a syntax that looks like method calls'
   spec.homepage    = 'https://github.com/Invoca/parameter_substitution'
-  spec.files       = ['lib/parameter_substitution.rb']
+  spec.files       = Dir['lib/**/*.rb']
 
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org'
