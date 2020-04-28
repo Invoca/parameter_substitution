@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    parameter_substitution (0.3.0.pre.2)
+    parameter_substitution (0.3.0.pre.3)
 
 GEM
   remote: https://rubygems.org/
