@@ -7,8 +7,8 @@ require "parameter_substitution/version"
 Gem::Specification.new do |spec|
   spec.name         = "parameter_substitution"
   spec.version      = ParameterSubstitution::VERSION
-  spec.authors      = ["Bob Smith", "James Ebentier"]
-  spec.email        = ["bob@invoca.com", "jebentier@invoca.com", "cmcgrath@invoca.com"]
+  spec.authors      = ["Invoca Development"]
+  spec.email        = ["development@invoca.com"]
 
   spec.summary     = 'Handles parsing an input strings with embedded substitution parameters and replacing them with values from a provided mapping.'
   spec.description = 'The substitution can be formatted using a syntax that looks like method calls'
