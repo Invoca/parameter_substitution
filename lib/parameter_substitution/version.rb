@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class ParameterSubstitution
-  VERSION = "0.3.0.pre.4"
+  VERSION = "1.0.0"
 end

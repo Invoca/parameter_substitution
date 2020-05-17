@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    parameter_substitution (0.3.0)
+    parameter_substitution (1.0.0)
       activesupport (~> 4.2)
       builder (~> 3.2)
       invoca-utils (~> 0.3)
