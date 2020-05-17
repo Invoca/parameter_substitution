@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'hobo_support/enumerable'
+require 'invoca/utils/enumerable'
 
 class ParameterSubstitution
   class Context

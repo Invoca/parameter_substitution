@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-
-require 'hobo_support'
+require "parameter_substitution/formatters/date_time_format"
 
 class ParameterSubstitution::Formatters::DateTimeCustom < ParameterSubstitution::Formatters::DateTimeFormat
   def self.has_parameters?
@@ -18,8 +17,6 @@ class ParameterSubstitution::Formatters::DateTimeCustom < ParameterSubstitution:
   end
 
   def format(value)
-    self.class.parse_to_time(value, @parse_options)._?
-        .in_time_zone(@to_time_zone)._?
-        .strftime(@to_formatting).to_s
+    self.class.parse_to_time(value, @parse_options)&.in_time_zone(@to_time_zone)&.strftime(@to_formatting).to_s # rubocop:disable Lint/SafeNavigationChain
   end
 end

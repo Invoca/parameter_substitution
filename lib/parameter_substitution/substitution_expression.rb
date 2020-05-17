@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'hobo_support/array'
+require 'invoca/utils/array'
 
 class ParameterSubstitution
   class SubstitutionExpression
