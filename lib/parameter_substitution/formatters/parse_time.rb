@@ -17,7 +17,7 @@ class ParameterSubstitution::Formatters::ParseTime < ParameterSubstitution::Form
     value && Time.strptime(value.to_s, @format_string).strftime('%Y-%m-%d %H:%M:%S')
   rescue ArgumentError => ex
     # strptime raises argument error if either argument is wrong.
-    ex.message =~ /invalid strptime format/ or raise
+    ex.message =~ /invalid .*strptime format/ or raise
     value
   end
 end
