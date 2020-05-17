@@ -2,6 +2,7 @@
 
 # See lib/parameter_substitution/readme.md
 
+require 'active_support/all'
 require "parameter_substitution/context"
 require "parameter_substitution/parse_error"
 require "parameter_substitution/parser"
@@ -17,8 +18,6 @@ require "parameter_substitution/formatters/date_time_format"
 Dir[File.dirname(__FILE__) + '/parameter_substitution/formatters/*.rb'].each do |file|
   require file
 end
-
-require 'active_support/all'
 
 class ParameterSubstitution
   class SubstitutionError < StandardError; end
