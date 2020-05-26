@@ -13,7 +13,7 @@ describe ParameterSubstitution::Formatters::IfTruthy do
     end
 
     it "provide a description" do
-      expect(@format_class.description).to eq("If the input is truthy (i.e. true, t, 1) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument.")
+      expect(@format_class.description).to eq("If the input is truthy (i.e. true, \"t\", 1, \"on\", \"yes\") then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument.")
     end
 
     it "report that it has parameters" do

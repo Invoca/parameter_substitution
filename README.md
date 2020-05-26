@@ -59,6 +59,24 @@ ParameterSubstitution.evaluate(
 
 The substitution behavior is very configurable because it is used in many different environments.  The configuration is passed through named arguments to the evaluate method.  These named arguments have defaults that should work for most conditions.
 
+#### Default Formatters
+In addition to the custom formatters that you can specify in your app (see [Configuration](#configuration)), `ParameterSubstitution` has some default formatters that are available for use. Below is a list of some of the most common ones. You can see all available formatters in [formatters](lib/parameter_substitution/formatters/). 
+
+|      Formatter     | Description
+|--------------------|-------------
+| add_prefix         | This takes a prefix as a constructor parameter and prepends it to the value. If the value is blank, nothing is shown
+| cgi_unescape       | Url-decodes the string, preserves nil
+| compare_string     | Compares the field to a string and returns results based on the comparison
+| date_time_strftime | Formats a DateTime with the provided format string
+| downcase           | Converts to string and downcases the values, preserves nil
+| greater_than_value | Compares numerical values and returns results based on the comparison
+| if_nil             | Takes one new_value parameter. If the input is nil, the input is replaced with new_value
+| if_truthy          | If the input is truthy (i.e. true, "t", 1, "on", "yes") then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument
+| left               | Takes a single n argument. Returns the left most n characters from the input
+| lower              | Converts to string and returns all characters lowercased, preserves nil
+| right              | Takes a single n argument. Returns the right most n characters from the input
+| trim               | Returns the input as a string with leading and trailing whitespace removed
+| upper              | Converts to string and returns all characters uppercased, preserves nil
 
 ## Design
 
