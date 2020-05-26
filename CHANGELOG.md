@@ -9,7 +9,7 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 - Add if_truthy formatter
 
 ## [1.0.0] - 2020-05-18
-### Added
+### Changed
 - Replace hobo_support with invoca-utils
 
 [1.1.0]: https://github.com/Invoca/parameter_substitution/compare/v1.0.0...v1.1.0
