@@ -4,7 +4,7 @@ class ParameterSubstitution::Formatters::IfTruthy < ParameterSubstitution::Forma
   TRUTHY_VALUES = [true, "true", "t", 1, "1", "on", "yes"]
 
   def self.description
-    "If the input is truthy (i.e. true, t, 1) then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument."
+    "If the input is truthy (i.e. true, \"t\", 1, \"on\", \"yes\") then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument."
   end
 
   def self.has_parameters?
