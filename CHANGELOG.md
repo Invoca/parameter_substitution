@@ -4,7 +4,7 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - Next
+## [1.2.0] - Unreleased
 ### Added
 - Add if_truthy formatter, which replaces the input with the first argument if the input is truthy (i.e. true, "t", 1, "on", "yes"), the second argument otherwise.
 
