@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     parameter_substitution (1.0.0)
-      activesupport (~> 4.2)
+      activesupport (>= 4.2, < 7)
       builder (~> 3.2)
       invoca-utils (~> 0.3)
       parslet (~> 1.8)
@@ -10,11 +10,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.11.3)
-      i18n (~> 0.7)
+    activesupport (6.0.3.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
       minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
     appraisal (2.2.0)
       bundler
       rake
@@ -42,7 +43,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    i18n (0.9.5)
+    i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     invoca-utils (0.3.0)
     json (2.1.0)
@@ -94,6 +95,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby

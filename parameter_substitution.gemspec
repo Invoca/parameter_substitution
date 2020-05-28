@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     'allowed_push_host' => 'https://rubygems.org'
   }
 
-  spec.add_dependency 'activesupport', '~> 4.2'
+  spec.add_dependency 'activesupport', '>= 4.2', '< 7'
   spec.add_dependency 'builder',       '~> 3.2'
   spec.add_dependency 'invoca-utils',  '~> 0.3'
   spec.add_dependency 'parslet',       '~> 1.8'
