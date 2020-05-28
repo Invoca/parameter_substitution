@@ -9,3 +9,4 @@
 /tmp/
 .idea
 .rubocop-http*
+gemfiles/*.lock
