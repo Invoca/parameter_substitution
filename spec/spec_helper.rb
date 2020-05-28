@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV['TZ'] = 'America/Los_Angeles'
+
 require 'rspec'
 require 'pry-byebug'
 require 'simplecov'
