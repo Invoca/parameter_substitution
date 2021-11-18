@@ -10,7 +10,6 @@ jobs:
       matrix:
         gemfile:
         - Gemfile
-        - gemfiles/rails_4.gemfile
         - gemfiles/rails_5.gemfile
         - gemfiles/rails_6.gemfile
     env:
