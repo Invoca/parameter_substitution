@@ -8,7 +8,7 @@ describe ParameterSubstitution::Transform do
   end
 
   def context(text, options = {})
-    ParameterSubstitution::Context.new({ input: text, mapping: {} }.merge(options))
+    ParameterSubstitution::Context.new(**{ input: text, mapping: {} }.merge(options))
   end
 
   def transform(context)
