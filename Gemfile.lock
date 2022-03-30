@@ -103,7 +103,7 @@ PLATFORMS
 DEPENDENCIES
   appraisal
   bump (~> 0.6)
-  bundler (~> 1.17)
+  bundler (~> 2.2)
   guard-rspec
   parameter_substitution!
   pry-byebug
@@ -113,4 +113,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   1.17.3
+   2.3.9
