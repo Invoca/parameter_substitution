@@ -100,7 +100,6 @@ PLATFORMS
 DEPENDENCIES
   appraisal
   bump (~> 0.6)
-  bundler (~> 2.2)
   guard-rspec
   parameter_substitution!
   pry-byebug
