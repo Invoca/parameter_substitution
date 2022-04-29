@@ -70,6 +70,7 @@ In addition to the custom formatters that you can specify in your app (see [Conf
 | date_time_strftime | Formats a DateTime with the provided format string
 | downcase           | Converts to string and downcases the values, preserves nil
 | greater_than_value | Compares numerical values and returns results based on the comparison
+| hex_to_base64      | Converts hex encoded strings to base64 encoding
 | if_nil             | Takes one new_value parameter. If the input is nil, the input is replaced with new_value
 | if_truthy          | If the input is truthy (i.e. true, "t", 1, "on", "yes") then the input is replaced with the first argument. Otherwise, the input is replaced with the second argument
 | left               | Takes a single n argument. Returns the left most n characters from the input
