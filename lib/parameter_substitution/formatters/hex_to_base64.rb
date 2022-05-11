@@ -6,6 +6,8 @@ class ParameterSubstitution::Formatters::HexToBase64 < ParameterSubstitution::Fo
   end
 
   def self.format(value)
+    raise ArgumentError, "Bad non-hex input to hex_to_base64" if value !~ /^\h+$/
+
     [[value].pack("H*")].pack("m0")
   end
 end
