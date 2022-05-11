@@ -26,5 +26,9 @@ describe ParameterSubstitution::Formatters::HexToBase64 do
       expect(@format_class.format("5329639ae1b9b6cf94e44e8021ce9c43ac1861b00bf9af3febfa0189b7d67c8b")). to eq("UyljmuG5ts+U5E6AIc6cQ6wYYbAL+a8/6/oBibfWfIs=")
       expect('UyljmuG5ts+U5E6AIc6cQ6wYYbAL+a8/6/oBibfWfIs='.unpack("m0").first.unpack('H*').first). to eq('5329639ae1b9b6cf94e44e8021ce9c43ac1861b00bf9af3febfa0189b7d67c8b')
     end
+
+    it "raises an exception when an invalid hex value is passed in" do
+      expect { @format_class.format("X is not a HEX character") }.to raise_error(ArgumentError);
+    end
   end
 end
