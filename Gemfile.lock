@@ -21,7 +21,7 @@ GEM
       rake
       thor (>= 0.14.0)
     builder (3.2.4)
-    bump (0.6.1)
+    bump (0.10.0)
     byebug (10.0.2)
     coderay (1.1.2)
     concurrent-ruby (1.1.10)
