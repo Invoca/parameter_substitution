@@ -4,6 +4,10 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - Unreleased
+### Added
+- Add string_to_base64 formatter, which converts a string to base64 format.
+
 ## [1.3.0] - Unreleased
 ### Removed
 - Removed support for rails 4
