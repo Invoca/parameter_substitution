@@ -24,7 +24,7 @@ describe ParameterSubstitution::Formatters::StringToBase64 do
     it "converts 80+ character string to base64 without newline character" do
       # sha256 original value: cMwwWi7qNY3HdknYjir5H2kovw1RFIlelpznZs59K3sHZCDNgvzF5hgiPI0c3LF8NJH0b3W116A9mrnk50
       expect(@format_class.format("cMwwWi7qNY3HdknYjir5H2kovw1RFIlelpznZs59K3sHZCDNgvzF5hgiPI0c3LF8NJH0b3W116A9mrnk50")). to eq("Y013d1dpN3FOWTNIZGtuWWppcjVIMmtvdncxUkZJbGVscHpuWnM1OUszc0haQ0ROZ3Z6RjVoZ2lQSTBjM0xGOE5KSDBiM1cxMTZBOW1ybms1MA==")
-      expect('Y01vd3dXaTdxTlkzSGRrbllqaXI1SDJrb3Z3MVJGSWxlbHB6blpzNTlLM3NHWkNETmd2ekY1aGdpUEkwYzNMRjhOSkgwYjNXMTE2QTltcm5rNTA='.unpack("m0").first.unpack('H*').first).to eq('634d6f7777576937714e593348646b6e596a69723548326b6f7677315246496c656c707a6e5a7335394b3373475a43444e67767a463568676950493063334c46384e4a483062335731313641396d726e6b3530')
+      expect('Y01vd3dXaTdxTlkzSGRrbllqaXI1SDJrb3Z3MVJGSWxlbHB6blpzNTlLM3NHWkNETmd2ekY1aGdpUEkwYzNMRjhOSkgwYjNXMTE2QTltcm5rNTA='.unpack("m0").first).to eq('cMowwWi7qNY3HdknYjir5H2kovw1RFIlelpznZs59K3sGZCDNgvzF5hgiPI0c3LF8NJH0b3W116A9mrnk50')
     end
 
     it "handles nil input" do
