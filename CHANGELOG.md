@@ -7,6 +7,7 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 ## [1.4.0] - 2024-01-22
 ### Added
 - Add string_to_base64 formatter, which converts a string to base64 format.
+- Remove support for ruby 2.6
 
 ## [1.3.0] - 2021-03-31
 ### Removed
