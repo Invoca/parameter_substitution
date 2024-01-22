@@ -4,9 +4,15 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - Unreleased
+## [1.4.0] - 2024-01-22
+### Added
+- Add string_to_base64 formatter, which converts a string to base64 format.
+- Remove support for ruby 2.6
+
+## [1.3.0] - 2021-03-31
 ### Removed
 - Removed support for rails 4
+- https://github.com/Invoca/parameter_substitution/pull/59
 
 ## [1.2.0] - 2020-05-28
 ### Added
