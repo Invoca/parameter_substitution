@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'appraisal'
+gem 'appraisal-matrix'
 gem 'bump',          '~> 0.6'
 gem 'guard-rspec'
 gem 'pry-byebug'
