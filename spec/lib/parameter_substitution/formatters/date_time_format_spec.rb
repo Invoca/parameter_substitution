@@ -11,29 +11,29 @@ describe ParameterSubstitution::Formatters::DateTimeFormat do
     end
 
     it "support converting from strings using a best guess" do
-      expect(@format_class.parse_to_time("2011-07-09 12:00:00").to_s(:db)).to eq("2011-07-09 19:00:00")
-      expect(@format_class.parse_to_time('2017-01-01 09:47:18 -05:00').to_s(:db)).to eq("2017-01-01 14:47:18")
-      expect(@format_class.parse_to_time('2017-01-01 21:47:18 -05:00').to_s(:db)).to eq("2017-01-02 02:47:18")
+      expect(@format_class.parse_to_time("2011-07-09 12:00:00").to_formatted_s(:db)).to eq("2011-07-09 19:00:00")
+      expect(@format_class.parse_to_time('2017-01-01 09:47:18 -05:00').to_formatted_s(:db)).to eq("2017-01-01 14:47:18")
+      expect(@format_class.parse_to_time('2017-01-01 21:47:18 -05:00').to_formatted_s(:db)).to eq("2017-01-02 02:47:18")
     end
 
     it "support converting from unix time ms to times" do
       integer_time = Time.new(2011, 7, 9, 19, 0, 0).to_i * 1000 # Will be converted to UTC
 
-      expect(@format_class.parse_to_time(integer_time).to_s(:db)).to eq("2011-07-10 02:00:00")
-      expect(@format_class.parse_to_time(integer_time.to_s).to_s(:db)).to eq("2011-07-10 02:00:00")
+      expect(@format_class.parse_to_time(integer_time).to_formatted_s(:db)).to eq("2011-07-10 02:00:00")
+      expect(@format_class.parse_to_time(integer_time.to_s).to_formatted_s(:db)).to eq("2011-07-10 02:00:00")
     end
 
     it "support converting from unix time seconds to times" do
       integer_time = Time.new(2011, 7, 9, 19, 0, 0).to_i # Will be converted to UTC
 
-      expect(@format_class.parse_to_time(integer_time).to_s(:db)).to eq("2011-07-10 02:00:00")
-      expect(@format_class.parse_to_time(integer_time.to_s).to_s(:db)).to eq("2011-07-10 02:00:00")
+      expect(@format_class.parse_to_time(integer_time).to_formatted_s(:db)).to eq("2011-07-10 02:00:00")
+      expect(@format_class.parse_to_time(integer_time.to_s).to_formatted_s(:db)).to eq("2011-07-10 02:00:00")
     end
 
     it "Support Five9's absurd format - YYYYMMDDhhmmsssss" do
       integer_time = 20_160_727_212_335_707
-      expect(@format_class.parse_to_time(integer_time).to_s(:db)).to eq("2016-07-27 21:23:35")
-      expect(@format_class.parse_to_time(integer_time.to_s).to_s(:db)).to eq("2016-07-27 21:23:35")
+      expect(@format_class.parse_to_time(integer_time).to_formatted_s(:db)).to eq("2016-07-27 21:23:35")
+      expect(@format_class.parse_to_time(integer_time.to_s).to_formatted_s(:db)).to eq("2016-07-27 21:23:35")
     end
 
     it "not trip up on very long integers" do
