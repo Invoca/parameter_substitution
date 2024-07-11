@@ -4,6 +4,14 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - Unreleased
+### Removed
+- Remove support for eol ruby versions 2.7
+- Remove support for activesupport 5
+
+### Changed
+- Loosen activesupport dependency to allow for rails 7
+
 ## [1.4.0] - 2024-01-22
 ### Added
 - Add string_to_base64 formatter, which converts a string to base64 format.
@@ -27,6 +35,8 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 ### Changed
 - Replace hobo_support with invoca-utils
 
+[2.0.0]: https://github.com/Invoca/parameter_substitution/compare/v1.4.0...v2.0.0
+[1.4.0]: https://github.com/Invoca/parameter_substitution/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/Invoca/parameter_substitution/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Invoca/parameter_substitution/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Invoca/parameter_substitution/compare/v1.0.0...v1.1.0

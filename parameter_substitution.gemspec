@@ -19,7 +19,9 @@ Gem::Specification.new do |spec|
     'allowed_push_host' => 'https://rubygems.org'
   }
 
-  spec.add_dependency 'activesupport', '>= 5.2', '< 7'
+  spec.required_ruby_version = '>=3.1'
+
+  spec.add_dependency 'activesupport', '>= 6.0'
   spec.add_dependency 'builder',       '~> 3.2'
   spec.add_dependency 'invoca-utils',  '~> 0.3'
   spec.add_dependency 'parslet',       '~> 1.8'
