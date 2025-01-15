@@ -7,6 +7,10 @@ The substitution can be formatted using a syntax that looks like method calls.  
 ParameterSubstitution.evaluate( input: "it is a <weather.upper> day", mapping: { "weather" => "windy" } )
 ```
 
+# Method Documentation
+
+The methods implemented by this gem are documented [here](https://invoca.atlassian.net/wiki/spaces/CS2/pages/804029130/Advanced+Webhook+Formatting).
+
 ## Installation
 
 Add this line to your application's Gemfile:
