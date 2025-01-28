@@ -14,8 +14,9 @@ gem 'rspec'
 gem "rspec_junit_formatter"
 gem 'simplecov'
 
-gem "base64", "~> 0.2.0"
-gem "bigdecimal", "~> 3.1"
-gem "mutex_m", "~> 0.2.0"
 
 gem "concurrent-ruby", "~> 1.3", "< 1.3.5"
+
+gem "base64", ">= 0.2.0"
+gem "bigdecimal", ">= 3.1"
+gem "mutex_m", ">= 0.2.0"
