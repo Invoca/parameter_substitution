@@ -63,22 +63,27 @@ class ParameterSubstitution
       ParameterSubstitution.config = config
     end
 
-    def find_tokens(string_with_tokens, mapping: {})
-      parse_expression(context_from_string(string_with_tokens, mapping)).substitution_parameter_names
+    def find_tokens(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
+      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).substitution_parameter_names
     end
 
-    def find_formatters(string_with_tokens, mapping: {})
-      parse_expression(context_from_string(string_with_tokens, mapping)).method_names
+    def find_formatters(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
+      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).method_names
     end
 
-    def find_warnings(string_with_tokens, mapping: {})
-      parse_expression(context_from_string(string_with_tokens, mapping)).parameter_and_method_warnings || []
+    def find_warnings(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
+      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).parameter_and_method_warnings || []
     end
 
     private
 
-    def context_from_string(string_with_tokens, mapping)
-      ParameterSubstitution::Context.new(input: string_with_tokens, mapping: mapping)
+    def context_from_string(string_with_tokens, mapping, parameter_start: "<", parameter_end: ">")
+      ParameterSubstitution::Context.new(
+        input: string_with_tokens,
+        mapping:,
+        parameter_start:,
+        parameter_end:
+      )
     end
 
     def parse_expression(context)
