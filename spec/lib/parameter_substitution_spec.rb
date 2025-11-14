@@ -86,11 +86,13 @@ describe ParameterSubstitution do
           let(:square_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
 
           it "returns tokens up to first dot when no mapping is provided" do
-            expect(ParameterSubstitution.find_tokens(square_expression, parameter_start: "[", parameter_end: "]")).to eq(['call', 'do_a_barrel_roll'])
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_tokens(square_expression, context_overrides: context_overrides)).to eq(['call', 'do_a_barrel_roll'])
           end
 
           it "returns tokens that exist in mapping when one is provided" do
-            expect(ParameterSubstitution.find_tokens(square_expression, mapping: mapping, parameter_start: "[", parameter_end: "]")).to eq(['call.start_time', 'do_a_barrel_roll'])
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_tokens(square_expression, mapping: mapping, context_overrides: context_overrides)).to eq(['call.start_time', 'do_a_barrel_roll'])
           end
         end
       end
@@ -108,18 +110,20 @@ describe ParameterSubstitution do
           let(:square_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
 
           it "returns all formatters after first dot when no mapping is provided" do
-            expect(ParameterSubstitution.find_formatters(square_expression, parameter_start: "[", parameter_end: "]")).to eq(['start_time', 'blank_if_nil', 'downcase'])
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_formatters(square_expression, context_overrides: context_overrides)).to eq(['start_time', 'blank_if_nil', 'downcase'])
           end
 
           it "returns formatters after all tokens when mapping is provided" do
-            expect(ParameterSubstitution.find_formatters(square_expression, mapping: mapping, parameter_start: "[", parameter_end: "]")).to eq(['blank_if_nil', 'downcase'])
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_formatters(square_expression, mapping: mapping, context_overrides: context_overrides)).to eq(['blank_if_nil', 'downcase'])
           end
         end
       end
 
       context '#find_warnings' do
         let(:expression_with_valid_params) { "<foo>" }
-        let(:expression_with_bad_paramss) { "<bobby><bobby2>" }
+        let(:expression_with_bad_params) { "<bobby><bobby2>" }
         let(:expression_with_bad_methods) { "<foo.test1.test2><foo.test3.test4><black.test1.test2>" }
         let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
         let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><foo.test3.test4>" }
@@ -133,7 +137,7 @@ describe ParameterSubstitution do
 
         context "when there are invalid parameters" do
           it "returns 2 warnings" do
-            expect(ParameterSubstitution.find_warnings(expression_with_bad_paramss)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_params)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
           end
         end
 
@@ -158,17 +162,20 @@ describe ParameterSubstitution do
           let(:square_expression_with_bad_methods) { "[foo.test1.test2][foo.test3.test4][black.test1.test2]" }
 
           it "returns empty array for valid parameters" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_valid_params, mapping: default_mapping, parameter_start: "[", parameter_end: "]"))
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_warnings(square_expression_with_valid_params, mapping: default_mapping, context_overrides: context_overrides))
               .to eq([])
           end
 
           it "returns warnings for invalid parameters" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_params, parameter_start: "[", parameter_end: "]"))
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_params, context_overrides: context_overrides))
               .to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
           end
 
           it "returns warnings for invalid methods" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_methods, mapping: default_mapping, parameter_start: "[", parameter_end: "]"))
+            context_overrides = { parameter_start: "[", parameter_end: "]" }
+            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_methods, mapping: default_mapping, context_overrides: context_overrides))
               .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used on parameter 'foo'",
                       "Unknown methods 'test1', 'test2' used on parameter 'black'"])
           end

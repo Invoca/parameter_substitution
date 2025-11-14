@@ -63,27 +63,35 @@ class ParameterSubstitution
       ParameterSubstitution.config = config
     end
 
-    def find_tokens(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).substitution_parameter_names
+    def find_tokens(string_with_tokens, mapping: {}, context_overrides: nil)
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).substitution_parameter_names
     end
 
-    def find_formatters(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).method_names
+    def find_formatters(string_with_tokens, mapping: {}, context_overrides: nil)
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).method_names
     end
 
-    def find_warnings(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).parameter_and_method_warnings || []
+    def find_warnings(string_with_tokens, mapping: {}, context_overrides: nil)
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).parameter_and_method_warnings || []
     end
 
     private
 
-    def context_from_string(string_with_tokens, mapping, parameter_start: "<", parameter_end: ">")
-      ParameterSubstitution::Context.new(
+    # Build context with optional overrides
+    # @param [String] string_with_tokens The input string containing tokens
+    # @param [Hash] mapping The mapping of parameters to values
+    # @param [Hash, nil] context_overrides Optional overrides for context attributes
+    # @return [ParameterSubstitution::Context] The constructed context
+    def build_context(string_with_tokens, mapping, context_overrides)
+      base_options = {
         input: string_with_tokens,
-        mapping:,
-        parameter_start:,
-        parameter_end:
-      )
+        mapping: mapping
+      }
+
+      ParameterSubstitution::Context.new(**base_options.merge(context_overrides || {}))
     end
 
     def parse_expression(context)
