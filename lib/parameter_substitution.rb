@@ -86,13 +86,15 @@ class ParameterSubstitution
     # @param [Hash, nil] context_overrides Optional overrides for context attributes
     # @return [ParameterSubstitution::Context] The constructed context
     def build_context(string_with_tokens, mapping, context_overrides)
+      override_options = context_overrides || {}
       base_options = {
         input: string_with_tokens,
         mapping: mapping
       }
 
-      ParameterSubstitution::Context.new(**base_options.merge(context_overrides || {}))
+      ParameterSubstitution::Context.new(**override_options.merge(base_options))
     end
+
 
     def parse_expression(context)
       cst = ParameterSubstitution::Parser.new(

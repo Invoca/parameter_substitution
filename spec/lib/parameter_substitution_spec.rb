@@ -95,6 +95,18 @@ describe ParameterSubstitution do
             expect(ParameterSubstitution.find_tokens(square_expression, mapping: mapping, context_overrides: context_overrides)).to eq(['call.start_time', 'do_a_barrel_roll'])
           end
         end
+
+        context 'when context_overrides attempts to override base options' do
+          it "ignores input override and uses method parameter" do
+            context_overrides = { input: "<different>" }
+            expect(ParameterSubstitution.find_tokens(expression, context_overrides: context_overrides)).to eq(['call', 'do_a_barrel_roll'])
+          end
+
+          it "ignores mapping override and uses method parameter" do
+            context_overrides = { mapping: { 'different' => 'value' } }
+            expect(ParameterSubstitution.find_tokens(expression, mapping: mapping, context_overrides: context_overrides)).to eq(['call.start_time', 'do_a_barrel_roll'])
+          end
+        end
       end
 
       context '#find_formatters' do
@@ -117,6 +129,18 @@ describe ParameterSubstitution do
           it "returns formatters after all tokens when mapping is provided" do
             context_overrides = { parameter_start: "[", parameter_end: "]" }
             expect(ParameterSubstitution.find_formatters(square_expression, mapping: mapping, context_overrides: context_overrides)).to eq(['blank_if_nil', 'downcase'])
+          end
+        end
+
+        context 'when context_overrides attempts to override base options' do
+          it "ignores input override and uses method parameter" do
+            context_overrides = { input: "<different>" }
+            expect(ParameterSubstitution.find_formatters(expression, context_overrides: context_overrides)).to eq(['start_time', 'blank_if_nil', 'downcase'])
+          end
+
+          it "ignores mapping override and uses method parameter" do
+            context_overrides = { mapping: { 'different' => 'value' } }
+            expect(ParameterSubstitution.find_formatters(expression, mapping: mapping, context_overrides: context_overrides)).to eq(['blank_if_nil', 'downcase'])
           end
         end
       end
@@ -178,6 +202,20 @@ describe ParameterSubstitution do
             expect(ParameterSubstitution.find_warnings(square_expression_with_bad_methods, mapping: default_mapping, context_overrides: context_overrides))
               .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used on parameter 'foo'",
                       "Unknown methods 'test1', 'test2' used on parameter 'black'"])
+          end
+        end
+
+        context 'when context_overrides attempts to override base options' do
+          it "ignores input override and uses method parameter" do
+            context_overrides = { input: "<different>" }
+            expect(ParameterSubstitution.find_warnings(expression_with_valid_params, mapping: default_mapping, context_overrides: context_overrides))
+              .to eq([])
+          end
+
+          it "ignores mapping override and uses method parameter" do
+            context_overrides = { mapping: { 'bobby' => 'value', 'bobby2' => 'value' } }
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_params, mapping: {}, context_overrides: context_overrides))
+              .to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
           end
         end
       end
