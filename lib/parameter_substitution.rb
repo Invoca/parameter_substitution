@@ -122,7 +122,6 @@ class ParameterSubstitution
       end
     end
 
-
     def parse_expression(context)
       cst = ParameterSubstitution::Parser.new(
         parameter_start: context.parameter_start,
