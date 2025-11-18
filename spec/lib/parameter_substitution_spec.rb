@@ -190,26 +190,6 @@ describe ParameterSubstitution do
         let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
         let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><foo.test3.test4>" }
 
-        shared_examples "validates context_overrides for find_warnings" do
-          context 'when context_overrides attempts to override base options' do
-            context "when input is provided in context_overrides" do
-              let(:test_context_overrides) { { input: "<different>" } }
-              it "raises error" do
-                expect { subject }.to raise_error(ArgumentError, /Invalid context_overrides keys: input/)
-              end
-            end
-
-            context "when mapping is provided in context_overrides" do
-              let(:test_expression) { expression_with_bad_params }
-              let(:test_mapping) { {} }
-              let(:test_context_overrides) { { mapping: { 'bobby' => 'value', 'bobby2' => 'value' } } }
-              it "raises error" do
-                expect { subject }.to raise_error(ArgumentError, /Invalid context_overrides keys: mapping/)
-              end
-            end
-          end
-        end
-
         context "when parameters are valid" do
           it "returns empty array" do
             expect(ParameterSubstitution.find_warnings(expression_with_valid_params, mapping: default_mapping))
@@ -257,7 +237,7 @@ describe ParameterSubstitution do
           end
         end
 
-        include_examples "validates context_overrides for find_warnings" do
+        include_examples "validates context_overrides" do
           let(:test_expression) { expression_with_valid_params }
           let(:test_mapping) { default_mapping }
           let(:test_context_overrides) { {} }
