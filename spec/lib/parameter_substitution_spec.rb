@@ -73,12 +73,12 @@ describe ParameterSubstitution do
       let(:expression) { "<call.start_time.blank_if_nil><do_a_barrel_roll.downcase>" }
       let(:mapping) { { 'call.start_time' => 'hello' } }
 
-      shared_examples "passes context_overrides to Context" do
+      shared_examples "passes context_overrides with symbolized keys to Context" do
         it "calls Context.new with the expected overrides" do
           allow(ParameterSubstitution::Context).to receive(:new).and_call_original
           subject
           expect(ParameterSubstitution::Context).to have_received(:new).once.with(
-            hash_including(test_context_overrides.merge(
+            hash_including(test_context_overrides.transform_keys(&:to_sym).merge(
               input: test_expression,
               mapping: test_mapping
             ))
@@ -121,21 +121,30 @@ describe ParameterSubstitution do
         end
 
         context 'with non-default delimiters' do
-          include_examples "passes context_overrides to Context" do
-            let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
-            let(:test_mapping) { {} }
-            let(:test_context_overrides) do
-              {
-                required_parameters: ["param1", "param2"],
-                parameter_start: "[",
-                parameter_end: "]",
-                destination_encoding: :json,
-                allow_unknown_replacement_parameters: true,
-                allow_nil: true,
-                allow_unmatched_parameter_end: true
-              }
+          let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
+          let(:test_mapping) { {} }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
+          end
+
+          context 'with symbol override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
             end
-            subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+          end
+
+          context 'with string override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
           end
         end
 
@@ -157,21 +166,30 @@ describe ParameterSubstitution do
         end
 
         context 'with non-default delimiters' do
-          include_examples "passes context_overrides to Context" do
-            let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
-            let(:test_mapping) { {} }
-            let(:test_context_overrides) do
-              {
-                required_parameters: ["param1", "param2"],
-                parameter_start: "[",
-                parameter_end: "]",
-                destination_encoding: :json,
-                allow_unknown_replacement_parameters: true,
-                allow_nil: true,
-                allow_unmatched_parameter_end: true
-              }
+          let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
+          let(:test_mapping) { {} }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
+          end
+
+          context 'with symbol override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
             end
-            subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+          end
+
+          context 'with string override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
           end
         end
 
@@ -219,21 +237,30 @@ describe ParameterSubstitution do
         end
 
         context "with non-default delimiters" do
-          include_examples "passes context_overrides to Context" do
-            let(:test_expression) { "[foo]" }
-            let(:test_mapping) { default_mapping }
-            let(:test_context_overrides) do
-              {
-                required_parameters: ["param1", "param2"],
-                parameter_start: "[",
-                parameter_end: "]",
-                destination_encoding: :json,
-                allow_unknown_replacement_parameters: true,
-                allow_nil: true,
-                allow_unmatched_parameter_end: true
-              }
+          let(:test_expression) { "[foo]" }
+          let(:test_mapping) { default_mapping }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
+          end
+
+          context "with symbol override keys" do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
             end
-            subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+          end
+
+          context "with string override keys" do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
           end
         end
 

@@ -106,7 +106,9 @@ class ParameterSubstitution
         mapping: mapping
       }
 
-      ParameterSubstitution::Context.new(**context_overrides.merge(base_options))
+      symbolized_overrides = context_overrides.transform_keys(&:to_sym)
+
+      ParameterSubstitution::Context.new(**symbolized_overrides.merge(base_options))
     end
 
     # @param [Hash] context_overrides The overrides to validate
