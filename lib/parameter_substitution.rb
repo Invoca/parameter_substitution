@@ -81,6 +81,17 @@ class ParameterSubstitution
 
     private
 
+    VALID_CONTEXT_OVERRIDE_KEYS = %i[
+        required_parameters
+        parameter_start
+        parameter_end
+        destination_encoding
+        allow_unknown_replacement_parameters
+        allow_nil
+        allow_unmatched_parameter_end
+      ].to_set
+    private_constant :VALID_CONTEXT_OVERRIDE_KEYS
+
     # Build context with optional overrides
     # @param [String] string_with_tokens The input string containing tokens
     # @param [Hash] mapping The mapping of parameters to values
@@ -103,21 +114,11 @@ class ParameterSubstitution
     def validate_context_overrides!(context_overrides)
       return if context_overrides.empty?
 
-      valid_keys = %i[
-        required_parameters
-        parameter_start
-        parameter_end
-        destination_encoding
-        allow_unknown_replacement_parameters
-        allow_nil
-        allow_unmatched_parameter_end
-      ].to_set
-
-      invalid_keys = context_overrides.keys.reject { |key| valid_keys.include?(key.to_sym) }
+      invalid_keys = context_overrides.keys.reject { |key| VALID_CONTEXT_OVERRIDE_KEYS.include?(key.to_sym) }
 
       if invalid_keys.any?
         invalid_keys_list = invalid_keys.join(", ")
-        valid_keys_list = valid_keys.sort.join(", ")
+        valid_keys_list = VALID_CONTEXT_OVERRIDE_KEYS.sort.join(", ")
         raise ArgumentError, "Invalid context_overrides keys: #{invalid_keys_list}. Valid keys are: #{valid_keys_list}"
       end
     end
