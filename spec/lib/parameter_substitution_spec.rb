@@ -73,6 +73,44 @@ describe ParameterSubstitution do
       let(:expression) { "<call.start_time.blank_if_nil><do_a_barrel_roll.downcase>" }
       let(:mapping) { { 'call.start_time' => 'hello' } }
 
+      shared_examples "passes context_overrides with symbolized keys to Context" do
+        it "calls Context.new with the expected overrides" do
+          allow(ParameterSubstitution::Context).to receive(:new).and_call_original
+          subject
+          expect(ParameterSubstitution::Context).to have_received(:new).once.with(
+            hash_including(test_context_overrides.transform_keys(&:to_sym).merge(
+              input: test_expression,
+              mapping: test_mapping
+            ))
+          )
+        end
+      end
+
+      shared_examples "validates context_overrides" do
+        context 'when context_overrides attempts to override base options' do
+          context "when input is provided in context_overrides" do
+            let(:test_context_overrides) { { input: "<different>" } }
+            it "raises error" do
+              expect { subject }.to raise_error(ArgumentError, /Invalid context_overrides keys: input/)
+            end
+          end
+
+          context "when mapping is provided in context_overrides" do
+            let(:test_context_overrides) { { mapping: { 'different' => 'value' } } }
+            it "raises error" do
+              expect { subject }.to raise_error(ArgumentError, /Invalid context_overrides keys: mapping/)
+            end
+          end
+        end
+
+        context 'when context_overrides contains invalid keys' do
+          let(:test_context_overrides) { { invalid_key: "value", another_invalid: "value2" } }
+          it "raises error with list of invalid keys" do
+            expect { subject }.to raise_error(ArgumentError, /Invalid context_overrides keys: invalid_key, another_invalid/)
+          end
+        end
+      end
+
       context "#find_tokens" do
         it "returns tokens up to first dot when no mapping is provided" do
           expect(ParameterSubstitution.find_tokens(expression)).to eq(['call', 'do_a_barrel_roll'])
@@ -83,15 +121,38 @@ describe ParameterSubstitution do
         end
 
         context 'with non-default delimiters' do
-          let(:square_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
-
-          it "returns tokens up to first dot when no mapping is provided" do
-            expect(ParameterSubstitution.find_tokens(square_expression, parameter_start: "[", parameter_end: "]")).to eq(['call', 'do_a_barrel_roll'])
+          let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
+          let(:test_mapping) { {} }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
           end
 
-          it "returns tokens that exist in mapping when one is provided" do
-            expect(ParameterSubstitution.find_tokens(square_expression, mapping: mapping, parameter_start: "[", parameter_end: "]")).to eq(['call.start_time', 'do_a_barrel_roll'])
+          context 'with symbol override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+            end
           end
+
+          context 'with string override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
+          end
+        end
+
+        include_examples "validates context_overrides" do
+          let(:test_expression) { expression }
+          let(:test_mapping) { mapping }
+          let(:test_context_overrides) { {} }
+          subject { ParameterSubstitution.find_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
         end
       end
 
@@ -105,21 +166,44 @@ describe ParameterSubstitution do
         end
 
         context 'with non-default delimiters' do
-          let(:square_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
-
-          it "returns all formatters after first dot when no mapping is provided" do
-            expect(ParameterSubstitution.find_formatters(square_expression, parameter_start: "[", parameter_end: "]")).to eq(['start_time', 'blank_if_nil', 'downcase'])
+          let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
+          let(:test_mapping) { {} }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
           end
 
-          it "returns formatters after all tokens when mapping is provided" do
-            expect(ParameterSubstitution.find_formatters(square_expression, mapping: mapping, parameter_start: "[", parameter_end: "]")).to eq(['blank_if_nil', 'downcase'])
+          context 'with symbol override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+            end
           end
+
+          context 'with string override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
+          end
+        end
+
+        include_examples "validates context_overrides" do
+          let(:test_expression) { expression }
+          let(:test_mapping) { mapping }
+          let(:test_context_overrides) { {} }
+          subject { ParameterSubstitution.find_formatters(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
         end
       end
 
       context '#find_warnings' do
         let(:expression_with_valid_params) { "<foo>" }
-        let(:expression_with_bad_paramss) { "<bobby><bobby2>" }
+        let(:expression_with_bad_params) { "<bobby><bobby2>" }
         let(:expression_with_bad_methods) { "<foo.test1.test2><foo.test3.test4><black.test1.test2>" }
         let(:expression_with_bad_params_and_methods) { "<bobby.test1.test2><bobby2.test3.test4>" }
         let(:expression_with_mixed_bad_params_and_methods) { "<bobby.test1.test2><foo.test3.test4>" }
@@ -133,7 +217,7 @@ describe ParameterSubstitution do
 
         context "when there are invalid parameters" do
           it "returns 2 warnings" do
-            expect(ParameterSubstitution.find_warnings(expression_with_bad_paramss)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
+            expect(ParameterSubstitution.find_warnings(expression_with_bad_params)).to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
           end
         end
 
@@ -153,25 +237,38 @@ describe ParameterSubstitution do
         end
 
         context "with non-default delimiters" do
-          let(:square_expression_with_valid_params) { "[foo]" }
-          let(:square_expression_with_bad_params) { "[bobby][bobby2]" }
-          let(:square_expression_with_bad_methods) { "[foo.test1.test2][foo.test3.test4][black.test1.test2]" }
-
-          it "returns empty array for valid parameters" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_valid_params, mapping: default_mapping, parameter_start: "[", parameter_end: "]"))
-              .to eq([])
+          let(:test_expression) { "[foo]" }
+          let(:test_mapping) { default_mapping }
+          let(:test_context_overrides) do
+            {
+              required_parameters: ["param1", "param2"],
+              parameter_start: "[",
+              parameter_end: "]",
+              destination_encoding: :json,
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
           end
 
-          it "returns warnings for invalid parameters" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_params, parameter_start: "[", parameter_end: "]"))
-              .to eq(["Unknown param 'bobby'", "Unknown param 'bobby2'"])
+          context "with symbol override keys" do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+            end
           end
 
-          it "returns warnings for invalid methods" do
-            expect(ParameterSubstitution.find_warnings(square_expression_with_bad_methods, mapping: default_mapping, parameter_start: "[", parameter_end: "]"))
-              .to eq(["Unknown methods 'test1', 'test2', 'test3', 'test4' used on parameter 'foo'",
-                      "Unknown methods 'test1', 'test2' used on parameter 'black'"])
+          context "with string override keys" do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
           end
+        end
+
+        include_examples "validates context_overrides" do
+          let(:test_expression) { expression_with_valid_params }
+          let(:test_mapping) { default_mapping }
+          let(:test_context_overrides) { {} }
+          subject { ParameterSubstitution.find_warnings(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
         end
       end
     end

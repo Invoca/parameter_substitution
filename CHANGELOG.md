@@ -4,6 +4,19 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2025-11-25
+### Added
+- Added optional context_overrides argument for the following methods:
+    - `ParameterSubstitution.find_tokens`
+    - `ParameterSubstitution.find_formatters`
+    - `ParameterSubstitution.find_warnings`
+
+### Removed 
+- Removed optional `parameter_start` and `parameter_end` arguments for the following methods:
+    - `ParameterSubstitution.find_tokens`
+    - `ParameterSubstitution.find_formatters`
+    - `ParameterSubstitution.find_warnings`
+
 ## [2.1.0] - 2025-11-06
 ### Added
 - Added optional `parameter_start` and `parameter_end` arguments for the following methods:

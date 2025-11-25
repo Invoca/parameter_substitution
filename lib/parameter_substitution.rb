@@ -3,6 +3,7 @@
 # See lib/parameter_substitution/readme.md
 
 require 'active_support/all'
+require 'set'
 require "parameter_substitution/context"
 require "parameter_substitution/parse_error"
 require "parameter_substitution/parser"
@@ -63,27 +64,65 @@ class ParameterSubstitution
       ParameterSubstitution.config = config
     end
 
-    def find_tokens(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).substitution_parameter_names
+    def find_tokens(string_with_tokens, mapping: {}, context_overrides: {})
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).substitution_parameter_names
     end
 
-    def find_formatters(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).method_names
+    def find_formatters(string_with_tokens, mapping: {}, context_overrides: {})
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).method_names
     end
 
-    def find_warnings(string_with_tokens, mapping: {}, parameter_start: "<", parameter_end: ">")
-      parse_expression(context_from_string(string_with_tokens, mapping, parameter_start: parameter_start, parameter_end: parameter_end)).parameter_and_method_warnings || []
+    def find_warnings(string_with_tokens, mapping: {}, context_overrides: {})
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).parameter_and_method_warnings || []
     end
 
     private
 
-    def context_from_string(string_with_tokens, mapping, parameter_start: "<", parameter_end: ">")
-      ParameterSubstitution::Context.new(
+    VALID_CONTEXT_OVERRIDE_KEYS = %i[
+        required_parameters
+        parameter_start
+        parameter_end
+        destination_encoding
+        allow_unknown_replacement_parameters
+        allow_nil
+        allow_unmatched_parameter_end
+      ].to_set
+    private_constant :VALID_CONTEXT_OVERRIDE_KEYS
+
+    # Build context with optional overrides
+    # @param [String] string_with_tokens The input string containing tokens
+    # @param [Hash] mapping The mapping of parameters to values
+    # @param [Hash] context_overrides Optional overrides for context attributes
+    # @return [ParameterSubstitution::Context] The constructed context
+    # @raise [ArgumentError] if context_overrides contains invalid keys
+    def build_context(string_with_tokens, mapping, context_overrides)
+      validate_context_overrides!(context_overrides)
+
+      base_options = {
         input: string_with_tokens,
-        mapping:,
-        parameter_start:,
-        parameter_end:
-      )
+        mapping: mapping
+      }
+
+      symbolized_overrides = context_overrides.transform_keys(&:to_sym)
+
+      ParameterSubstitution::Context.new(**symbolized_overrides.merge(base_options))
+    end
+
+    # @param [Hash] context_overrides The overrides to validate
+    # @raise [ArgumentError] if context_overrides contains invalid keys
+    def validate_context_overrides!(context_overrides)
+      return if context_overrides.empty?
+
+      invalid_keys = context_overrides.keys.reject { |key| VALID_CONTEXT_OVERRIDE_KEYS.include?(key.to_sym) }
+
+      if invalid_keys.any?
+        invalid_keys_list = invalid_keys.join(", ")
+        valid_keys_list = VALID_CONTEXT_OVERRIDE_KEYS.sort.join(", ")
+        raise ArgumentError, "Invalid context_overrides keys: #{invalid_keys_list}. Valid keys are: #{valid_keys_list}"
+      end
     end
 
     def parse_expression(context)
