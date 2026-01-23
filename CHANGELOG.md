@@ -4,7 +4,7 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.1.0.pre.1] - Not Released
+## [3.1.0.wb.1] - Not Released
 ### Added
 - Added `string_to_float` formatter, which converts a string to a float value.
 
