@@ -7,6 +7,7 @@ class ParameterSubstitution::Formatters::ToF < ParameterSubstitution::Formatters
 
   def self.format(value)
     return nil if value.nil? || value.to_s.strip.empty?
+    return nil unless value.match?(/^\d+\.?\d*$/)
 
     value.to_f.round(2)
   end

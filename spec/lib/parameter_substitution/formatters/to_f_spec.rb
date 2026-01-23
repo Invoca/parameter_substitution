@@ -30,9 +30,9 @@ describe ParameterSubstitution::Formatters::ToF do
       expect(@format_class.format("   ")).to eq(nil)
     end
 
-    it "returns 0.0 for invalid strings that cannot be converted" do
-      expect(@format_class.format("not_a_number")).to eq(0.0)
-      expect(@format_class.format("abc")).to eq(0.0)
+    it "returns nil for invalid strings that cannot be converted" do
+      expect(@format_class.format("not_a_number")).to eq(nil)
+      expect(@format_class.format("abc")).to eq(nil)
     end
   end
 end
