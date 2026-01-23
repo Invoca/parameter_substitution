@@ -6,7 +6,7 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [3.1.0.wb.1] - Not Released
 ### Added
-- Added `string_to_float` formatter, which converts a string to a float value.
+- Added `to_f` formatter, which converts a string to a float value.
 
 ## [3.0.0] - 2025-11-25
 ### Added
