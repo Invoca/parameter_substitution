@@ -67,6 +67,38 @@ describe ParameterSubstitution::Expression do
       end
     end
 
+    context "#all_substitution_parameter_names" do
+      it "returns top-level parameter names" do
+        expression = parse_expression("<simple_text><param_two>")
+        expect(expression.all_substitution_parameter_names).to eq(["simple_text", "param_two"])
+      end
+
+      it "returns nested parameter names from method call arguments" do
+        expression = parse_expression("<simple_text.if_nil(<another_simple_text>)>")
+        expect(expression.all_substitution_parameter_names).to eq(["simple_text", "another_simple_text"])
+      end
+
+      it "returns deeply nested parameter names" do
+        expression = parse_expression("<simple_text.if_nil(<another_simple_text.if_nil(<color>)>)>")
+        expect(expression.all_substitution_parameter_names).to eq(["simple_text", "another_simple_text", "color"])
+      end
+
+      it "returns nested parameter names with formatters applied" do
+        expression = parse_expression("<simple_text.if_nil(<another_simple_text.downcase>)>")
+        expect(expression.all_substitution_parameter_names).to eq(["simple_text", "another_simple_text"])
+      end
+
+      it "returns parameter names from multiple top-level expressions with nesting" do
+        expression = parse_expression("<simple_text.if_nil(<color>)><another_simple_text.if_nil(<integer>)>")
+        expect(expression.all_substitution_parameter_names).to eq(["simple_text", "color", "another_simple_text", "integer"])
+      end
+
+      it "returns empty array for plain text" do
+        expression = parse_expression("just plain text")
+        expect(expression.all_substitution_parameter_names).to eq([])
+      end
+    end
+
     context "#method_names" do
       it "return expression list method names" do
         expression = parse_expression("<simple_text.do_a_barrel_roll><foo.bar>")

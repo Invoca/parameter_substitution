@@ -156,6 +156,65 @@ describe ParameterSubstitution do
         end
       end
 
+      context "#find_all_tokens" do
+        it "returns top-level tokens the same as find_tokens" do
+          expect(ParameterSubstitution.find_all_tokens(expression)).to eq(['call', 'do_a_barrel_roll'])
+        end
+
+        it "returns nested tokens from method call arguments" do
+          nested_expression = "<dclid.compare_string(<gclid>, 'a', 'b')>"
+          expect(ParameterSubstitution.find_all_tokens(nested_expression)).to eq(['dclid', 'gclid'])
+        end
+
+        it "returns deeply nested tokens" do
+          deeply_nested = "<outer.if_nil(<middle.if_nil(<inner>)>)>"
+          expect(ParameterSubstitution.find_all_tokens(deeply_nested)).to eq(['outer', 'middle', 'inner'])
+        end
+
+        it "returns nested tokens with formatters applied to nested params" do
+          nested_with_formatters = "<dclid.compare_string(<gclid.downcase>, 'a', 'b')>"
+          expect(ParameterSubstitution.find_all_tokens(nested_with_formatters)).to eq(['dclid', 'gclid'])
+        end
+
+        it "returns tokens from multiple expressions with nesting" do
+          multi_nested = "<param1.if_nil(<param2>)><param3.if_nil(<param4>)>"
+          expect(ParameterSubstitution.find_all_tokens(multi_nested)).to eq(['param1', 'param2', 'param3', 'param4'])
+        end
+
+        context 'with non-default delimiters' do
+          let(:test_expression) { "[call.start_time.blank_if_nil][do_a_barrel_roll.downcase]" }
+          let(:test_mapping) { {} }
+          let(:test_context_overrides) do
+            {
+              parameter_start: "[",
+              parameter_end: "]",
+              allow_unknown_replacement_parameters: true,
+              allow_nil: true,
+              allow_unmatched_parameter_end: true
+            }
+          end
+
+          context 'with symbol override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_all_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+            end
+          end
+
+          context 'with string override keys' do
+            include_examples "passes context_overrides with symbolized keys to Context" do
+              subject { ParameterSubstitution.find_all_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides.transform_keys(&:to_s)) }
+            end
+          end
+        end
+
+        include_examples "validates context_overrides" do
+          let(:test_expression) { expression }
+          let(:test_mapping) { mapping }
+          let(:test_context_overrides) { {} }
+          subject { ParameterSubstitution.find_all_tokens(test_expression, mapping: test_mapping, context_overrides: test_context_overrides) }
+        end
+      end
+
       context '#find_formatters' do
         it "returns all formatters after first dot when no mapping is provided" do
           expect(ParameterSubstitution.find_formatters(expression)).to eq(['start_time', 'blank_if_nil', 'downcase'])

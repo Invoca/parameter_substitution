@@ -42,6 +42,13 @@ class ParameterSubstitution
       @expression_list.map_compact(&:parameter_name)
     end
 
+    # Recursively collects all substitution parameter names, including those
+    # nested inside method call arguments (e.g. <dclid.compare_string(<gclid>, 'a', 'b')>
+    # returns both "dclid" and "gclid").
+    def all_substitution_parameter_names
+      @expression_list.flat_map { |expr| parameter_names_from_expression(expr) }
+    end
+
     def method_names
       @expression_list.reduce([]) do |all_method_names, expression|
         all_method_names + methods_used_by_expression(expression)
@@ -141,6 +148,24 @@ class ParameterSubstitution
 
     def pluralize_text(text, amount)
       text + (amount > 1 ? 's' : '')
+    end
+
+    def parameter_names_from_expression(expr)
+      if (name = expr.parameter_name)
+        [name] + parameter_names_from_method_calls(expr.try(:method_calls))
+      else
+        []
+      end
+    end
+
+    def parameter_names_from_method_calls(method_calls)
+      return [] unless method_calls
+
+      method_calls.flat_map do |mc|
+        mc.arguments.flat_map do |arg|
+          arg.is_a?(Expression) ? arg.all_substitution_parameter_names : []
+        end
+      end
     end
   end
 end
