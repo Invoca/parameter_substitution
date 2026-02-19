@@ -4,6 +4,10 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-02-19
+### Added
+- Added `find_all_tokens` method that recursively collects all substitution parameter names, including those nested inside method call arguments.
+
 ## [3.1.0] - 2026-01-23
 ### Added
 - Added `to_f` formatter, which converts a string to a float value.
@@ -59,6 +63,7 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 ### Changed
 - Replace hobo_support with invoca-utils
 
+[3.2.0]: https://github.com/Invoca/parameter_substitution/compare/v3.1.0...v3.2.0
 [2.0.0]: https://github.com/Invoca/parameter_substitution/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/Invoca/parameter_substitution/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/Invoca/parameter_substitution/compare/v1.2.0...v1.3.0
