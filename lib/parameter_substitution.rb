@@ -69,6 +69,18 @@ class ParameterSubstitution
       parse_expression(context).substitution_parameter_names
     end
 
+    # Returns all substitution parameter names found in the input string, including
+    # those nested inside method call arguments.
+    #
+    # @param string_with_tokens [String] the input string containing tokens
+    # @param mapping [Hash] the mapping of parameters to values
+    # @param context_overrides [Hash] optional overrides for context attributes
+    # @return [Array<String>] all parameter names, including nested ones
+    def find_all_tokens(string_with_tokens, mapping: {}, context_overrides: {})
+      context = build_context(string_with_tokens, mapping, context_overrides)
+      parse_expression(context).all_substitution_parameter_names
+    end
+
     def find_formatters(string_with_tokens, mapping: {}, context_overrides: {})
       context = build_context(string_with_tokens, mapping, context_overrides)
       parse_expression(context).method_names

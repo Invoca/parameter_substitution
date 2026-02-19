@@ -42,6 +42,18 @@ class ParameterSubstitution
       @expression_list.map_compact(&:parameter_name)
     end
 
+    # Recursively collects all substitution parameter names, including those
+    # nested inside method call arguments.
+    #
+    # @example
+    #   # For "<dclid.compare_string(<gclid>, 'a', 'b')>"
+    #   # returns ["dclid", "gclid"]
+    #
+    # @return [Array<String>] all parameter names, including nested ones
+    def all_substitution_parameter_names
+      @expression_list.flat_map { |expr| parameter_names_from_expression(expr) }
+    end
+
     def method_names
       @expression_list.reduce([]) do |all_method_names, expression|
         all_method_names + methods_used_by_expression(expression)
@@ -141,6 +153,35 @@ class ParameterSubstitution
 
     def pluralize_text(text, amount)
       text + (amount > 1 ? 's' : '')
+    end
+
+    # Extracts the parameter name from an expression and recursively collects
+    # any nested parameter names from its method call arguments.
+    #
+    # @param expr [TextExpression, SubstitutionExpression] a single expression node
+    # @return [Array<String>] parameter names found in this expression and its arguments
+    def parameter_names_from_expression(expr)
+      if (name = expr.parameter_name)
+        [name] + parameter_names_from_method_calls(expr.try(:method_calls))
+      else
+        []
+      end
+    end
+
+    # Collects parameter names from nested Expression arguments within method calls.
+    #
+    # @param method_calls [Array<MethodCallExpression>, nil] the method calls to inspect
+    # @return [Array<String>] parameter names found in nested expression arguments
+    def parameter_names_from_method_calls(method_calls)
+      if method_calls
+        method_calls.flat_map do |method_call|
+          method_call.arguments.flat_map do |arg|
+            arg.is_a?(Expression) ? arg.all_substitution_parameter_names : []
+          end
+        end
+      else
+        []
+      end
     end
   end
 end
