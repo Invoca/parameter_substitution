@@ -4,6 +4,10 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-02-24
+### Added
+- Added `dollars_to_cents` formatter, which converts a dollar amount (provided as a string or numeric value) to an integer representing the equivalent amount in cents. For example, "12.34" would be converted to 1234.
+
 ## [3.2.0] - 2026-02-19
 ### Added
 - Added `find_all_tokens` method that recursively collects all substitution parameter names, including those nested inside method call arguments.
