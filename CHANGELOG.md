@@ -6,7 +6,7 @@ Note: This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [3.3.0] - 2026-02-24
 ### Added
-- Added `dollars_to_cents` formatter, which converts a string representing a dollar amount to an integer representing the equivalent amount in cents. For example, "12.34" would be converted to 1234.
+- Added `dollars_to_cents` formatter, which converts a dollar amount (provided as a string or numeric value) to an integer representing the equivalent amount in cents. For example, "12.34" would be converted to 1234.
 
 ## [3.2.0] - 2026-02-19
 ### Added
